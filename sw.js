@@ -5,7 +5,7 @@
  *  - Other same-origin GETs: cache-first, then network (and cache the response).
  *  - Old caches are removed on activate. Bump CACHE_VERSION when you change any file.
  */
-const CACHE_VERSION = 'cad-guide-v2.0.3';
+const CACHE_VERSION = 'cad-guide-v2.1.0';
 const PRECACHE = [
   './',
   './index.html',
@@ -27,7 +27,9 @@ self.addEventListener('install', (event) => {
   event.waitUntil(
     caches.open(CACHE_VERSION)
       .then((cache) => cache.addAll(PRECACHE.map((u) => new Request(u, { cache: 'reload' }))))
-      .then(() => self.skipWaiting())
+      // First install activates at once. Updates wait until the user taps "Refresh" (SKIP_WAITING message)
+      // or closes all tabs/app windows, so content never swaps mid-read.
+      .then(() => { if (!self.registration.active) return self.skipWaiting(); })
   );
 });
 

@@ -163,15 +163,15 @@
   @keyframes rise { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: none; } }
 
   /* ---------- Home hero ---------- */
-  .hero { text-align: center; padding: 18px 0 0; }
+  .hero { text-align: center; padding: 12px 0 0; }
   .eyebrow {
     display: inline-flex; align-items: center; gap: 8px;
     font: 800 .7rem/1 var(--display); letter-spacing: .18em; text-transform: uppercase; color: var(--accent-ink);
   }
   .hero .eyebrow { background: var(--accent-soft); padding: 7px 12px; border-radius: 999px; }
-  .hero h1 { font: 400 clamp(2.25rem, 9vw, 3.4rem)/1.02 var(--serif); letter-spacing: -.01em; margin: 14px 0 8px; }
+  .hero h1 { font: 400 clamp(2.25rem, 9vw, 3.4rem)/1.02 var(--serif); letter-spacing: -.01em; margin: 14px 0 20px; }
   .hero h1 em { font-style: normal; color: var(--tbp-red); }
-  .hero p { color: var(--muted); max-width: 26em; margin: 0 auto 20px; font-size: .94rem; line-height: 1.5; }
+  .hero p { color: var(--muted); max-width: 26em; margin: 0 auto 18px; font-size: .94rem; line-height: 1.5; }
 
   /* Search: large, centered, AI-era input */
   .search {
@@ -401,6 +401,82 @@
   .tabbar a[aria-current="page"] svg.i { transform: translateY(-1px); stroke-width: 2.1; }
   body.searching .tabbar a[aria-current="page"] { background: transparent; color: var(--muted); }
 
+
+  /* ---------- v2.1: compact alert ---------- */
+  .alert li .tl { display: block; color: rgba(242,245,249,.82); }
+  .alert:not(.expanded) li .more { display: none; }
+  .alert.expanded li .tl { display: none; }
+  .alert:not(.expanded) li { padding: 10px 0; }
+  .alert:not(.expanded) li > strong:first-child { margin-bottom: 0; }
+  .alert-toggle {
+    position: relative; z-index: 1; display: flex; align-items: center; gap: 6px; margin: 4px 0 6px; padding: 8px 0;
+    background: none; border: 0; color: #F5A49D; font: 700 .82rem var(--display); cursor: pointer;
+  }
+  .alert-toggle svg.i { width: 16px; height: 16px; transition: transform .25s var(--ease); }
+  .alert.expanded .alert-toggle svg.i { transform: rotate(180deg); }
+  @media (min-width: 700px) { .alert:not(.expanded) ul { columns: 2; } }
+
+  /* ---------- install card ---------- */
+  .install { display: none; }
+  .install.on:not([hidden]) { display: flex; align-items: center; gap: 12px; margin-top: 14px; padding: 12px 12px 12px 14px;
+    background: var(--surface); border: 1px dashed var(--line-2); border-radius: var(--r-md); }
+  .install .ii { color: var(--accent-ink); display: grid; }
+  .install .it { flex: 1; min-width: 0; font-size: .82rem; color: var(--muted); line-height: 1.4; }
+  .install .it b { display: block; font: 700 .9rem var(--display); color: var(--text); }
+  .install .x { border: 0; background: none; color: var(--muted); width: 36px; height: 36px; display: grid; place-items: center; cursor: pointer; }
+  .install .x svg.i { width: 18px; height: 18px; }
+  .btn.sm { height: 36px; padding: 0 14px; font-size: .8rem; }
+  .label .hint { font: 600 .74rem var(--body); color: var(--muted); }
+
+  /* ---------- search results ---------- */
+  .results { display: none; margin-top: 8px; }
+  body.searching .results { display: block; }
+  body.searching .view:not(.home-hero) { display: none !important; }
+  .rgroup { margin: 18px 0 8px; }
+  .rgroup h3 { font: 800 .66rem/1 var(--display); letter-spacing: .15em; text-transform: uppercase; color: var(--muted); margin: 0 4px 10px; display: flex; justify-content: space-between; }
+  .result {
+    display: block; width: 100%; text-align: left; cursor: pointer; margin: 0 0 8px; padding: 14px 16px;
+    background: var(--surface); border: 1px solid var(--line); border-radius: var(--r-md); box-shadow: var(--shadow-sm);
+    color: var(--text-2); font: 400 .88rem/1.5 var(--body); transition: transform .12s var(--ease), border-color .2s;
+  }
+  .result:active { transform: scale(.985); }
+  @media (hover: hover) { .result:hover { border-color: var(--accent); } }
+  .result b { display: flex; align-items: center; gap: 8px; font: 700 .95rem/1.3 var(--display); color: var(--text); margin-bottom: 4px; }
+  .result b::after { content: ''; margin-left: auto; width: 7px; height: 7px; border-right: 2px solid var(--muted); border-top: 2px solid var(--muted); transform: rotate(45deg); flex: none; opacity: .6; }
+  .result mark { background: var(--mark); color: inherit; border-radius: 3px; padding: 0 1px; }
+  .flash { animation: flash 1.8s var(--ease) 1; border-radius: 10px; }
+  @keyframes flash { 0%, 30% { box-shadow: 0 0 0 4px var(--accent-soft), 0 0 0 1px var(--accent); } 100% { box-shadow: 0 0 0 0 transparent; } }
+
+  /* ---------- section head actions + subnav ---------- */
+  .sec-head { position: relative; }
+  .sec-head .share { position: absolute; right: 0; top: 18px; }
+  .sec-head h2 { padding-right: 48px; }
+  .subnav {
+    position: sticky; top: calc(60px + env(safe-area-inset-top)); z-index: 20; display: flex; gap: 8px; overflow-x: auto;
+    margin: 0 -18px 14px; padding: 8px 18px; scrollbar-width: none;
+    background: var(--glass); -webkit-backdrop-filter: saturate(180%) blur(20px); backdrop-filter: saturate(180%) blur(20px);
+  }
+  .subnav::-webkit-scrollbar { display: none; }
+  .subnav a {
+    flex: none; white-space: nowrap; text-decoration: none; padding: 7px 13px; border-radius: 999px;
+    border: 1px solid var(--line-2); background: var(--surface); color: var(--text-2); font: 600 .8rem var(--body);
+  }
+  .subnav a.on { background: var(--text); color: var(--bg); border-color: var(--text); }
+  html { scroll-padding-top: calc(120px + env(safe-area-inset-top)); }
+
+  /* ---------- toast ---------- */
+  .toast {
+    position: fixed; z-index: 50; left: 50%; bottom: calc(var(--tabbar-h) + 22px + env(safe-area-inset-bottom));
+    transform: translate(-50%, 20px); opacity: 0; pointer-events: none; transition: opacity .25s, transform .3s var(--ease);
+    display: flex; align-items: center; gap: 14px; max-width: calc(100% - 32px); padding: 10px 10px 10px 16px;
+    background: #2B2F31; color: #F4F4F4; border-radius: 14px; box-shadow: var(--shadow-lg); font: 600 .86rem var(--body);
+  }
+  [data-theme="dark"] .toast { background: #EFECEB; color: #2B2F31; }
+  .toast.show { opacity: 1; transform: translate(-50%, 0); pointer-events: auto; }
+  .toast button { border: 0; background: rgba(208,70,60,.18); color: #F5A49D; font: 800 .8rem var(--display); padding: 8px 12px; border-radius: 10px; cursor: pointer; }
+  [data-theme="dark"] .toast button { color: #B5362D; }
+  .toast button:empty { display: none; }
+
   .hidden-by-search { display: none !important; }
 
   @media (min-width: 700px) {
@@ -438,6 +514,10 @@
   <symbol id="i-sun" viewBox="0 0 24 24"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></symbol>
   <symbol id="i-reset" viewBox="0 0 24 24"><path d="M3 12a9 9 0 1 0 3-6.7"/><path d="M3 4v5h5"/></symbol>
   <symbol id="i-arrow" viewBox="0 0 24 24"><path d="M7 17 17 7M8 7h9v9"/></symbol>
+  <symbol id="i-share" viewBox="0 0 24 24"><path d="M12 3v12"/><path d="m7 8 5-5 5 5"/><path d="M5 13v6a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2v-6"/></symbol>
+  <symbol id="i-copy" viewBox="0 0 24 24"><rect x="8" y="8" width="13" height="13" rx="2.5"/><path d="M16 8V5.5A2.5 2.5 0 0 0 13.5 3h-8A2.5 2.5 0 0 0 3 5.5v8A2.5 2.5 0 0 0 5.5 16H8"/></symbol>
+  <symbol id="i-plus" viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="5"/><path d="M12 8v8M8 12h8"/></symbol>
+  <symbol id="i-chev" viewBox="0 0 24 24"><path d="m6 9 6 6 6-6"/></symbol>
   <symbol id="i-shield" viewBox="0 0 24 24"><path d="M12 3 5 6v6c0 4.4 3 7.6 7 9 4-1.4 7-4.6 7-9V6Z"/><path d="m9 12 2 2 4-4"/></symbol>
 </svg>
 
@@ -459,7 +539,6 @@
     <div class="hero">
       <span class="eyebrow">Clinician Pocket Guide</span>
       <h1>Cold Agglutinin <em>Disease</em></h1>
-      <p>Workup, treatment and transfusion protocols at the bedside. Works offline.</p>
       <div class="search" id="searchBox">
         <svg class="i" aria-hidden="true"><use href="#i-search"/></svg>
         <input id="search" type="search" inputmode="search" autocomplete="off" spellcheck="false" enterkeyhint="search"
@@ -484,23 +563,24 @@
       <div><span class="eyebrow">Critical · Read first</span><h2 id="alertTitle">Keep it warm</h2></div>
     </div>
     <ul>
-      <li><strong>Specimen handling</strong> keep blood samples at <span class="temp">37–40 °C</span> from the moment of draw until serum/plasma is separated. Pre-warm tubes, transport in a 37 °C water bath / heat block or warmed container, and tell the lab it is a cold agglutinin sample. Cooling causes in-vitro agglutination and adsorption of the antibody onto RBCs, giving a <strong>falsely low titer</strong> and spurious CBC results.</li>
-      <li><strong>No cold IV fluids or blood</strong> warm ALL infusions and blood products with an <strong>approved in-line blood/fluid warmer</strong>. Never use improvised methods (microwave, hot water, radiators).</li>
-      <li><strong>Keep the patient warm</strong> warm room, blankets, cover extremities/head; avoid cold exposure, ice packs and cold drinks. Avoid perioperative hypothermia.</li>
-      <li><strong>Do not withhold urgently needed transfusion</strong> because of crossmatch difficulty; discuss with the transfusion service and give warmed blood.</li>
+      <li><strong>Specimen handling</strong><span class="tl">Keep blood samples at 37–40 °C from draw until separated.</span><span class="more"> keep blood samples at <span class="temp">37–40 °C</span> from the moment of draw until serum/plasma is separated. Pre-warm tubes, transport in a 37 °C water bath / heat block or warmed container, and tell the lab it is a cold agglutinin sample. Cooling causes in-vitro agglutination and adsorption of the antibody onto RBCs, giving a <strong>falsely low titer</strong> and spurious CBC results.</span></li>
+      <li><strong>No cold IV fluids or blood</strong><span class="tl">Warm all infusions and blood products with an in-line warmer.</span><span class="more"> warm ALL infusions and blood products with an <strong>approved in-line blood/fluid warmer</strong>. Never use improvised methods (microwave, hot water, radiators).</span></li>
+      <li><strong>Keep the patient warm</strong><span class="tl">Warm room, blankets, cover extremities and head.</span><span class="more"> warm room, blankets, cover extremities/head; avoid cold exposure, ice packs and cold drinks. Avoid perioperative hypothermia.</span></li>
+      <li><strong>Do not withhold urgently needed transfusion</strong><span class="more"> because of crossmatch difficulty; discuss with the transfusion service and give warmed blood.</span></li>
     </ul>
+    <button class="alert-toggle" type="button" id="alertToggle" aria-expanded="false"><span>Show details</span><svg class="i" aria-hidden="true"><use href="#i-chev"/></svg></button>
   </section>
 
-  <div class="view home-only" data-route="home">
-    <div class="label"><h2>Key numbers</h2></div>
-    <div class="facts">
-      <div class="fact red"><div class="k">Specimen</div><div class="v">37–40<small>°C</small></div><div class="d">Draw to separation. Cooling gives a falsely low titer.</div></div>
-      <div class="fact"><div class="k">CA titer</div><div class="v">≥64<small>at 4 °C</small></div><div class="d">Supports CAD; often ≥512.</div></div>
-      <div class="fact"><div class="k">DAT</div><div class="v">C3d<small>+ / IgG −</small></div><div class="d">Monospecific strongly C3d positive.</div></div>
-      <div class="fact"><div class="k">Thermal amplitude</div><div class="v">≥28–30<small>°C</small></div><div class="d">Clinically significant; tracks severity.</div></div>
-      <div class="fact"><div class="k">Vaccinate</div><div class="v">≥2<small>weeks</small></div><div class="d">Before first sutimlimab dose.</div></div>
-    </div>
+  <div class="view home-only install" data-route="home" id="installCard" hidden>
+    <span class="ii"><svg class="i" aria-hidden="true"><use href="#i-plus"/></svg></span>
+    <div class="it"><b>Add to your home screen</b><span id="installText">Opens like an app and works offline.</span></div>
+    <button class="btn sm" type="button" id="installBtn" hidden>Install</button>
+    <button class="x" type="button" id="installClose" aria-label="Dismiss"><svg class="i"><use href="#i-x"/></svg></button>
+  </div>
 
+  <div class="results" id="results" aria-live="polite"></div>
+
+  <div class="view home-only" data-route="home">
     <div class="label"><h2>Explore</h2></div>
     <nav class="tiles" aria-label="Topics">
       <a class="tile wide hot" href="#checklist">
@@ -528,12 +608,21 @@
         <span><b>Lab pitfalls</b><span class="s">CBC artifacts, DAT, titer, smear</span></span>
         <span class="go"><svg class="i"><use href="#i-arrow"/></svg></span>
       </a>
-      <a class="tile wide" href="#management" data-sub="vax">
+      <a class="tile wide" href="#management/vax">
         <span class="ti"><svg class="i"><use href="#i-shield"/></svg></span>
         <span><b>Vaccines</b><span class="s">Before complement inhibition</span></span>
         <span class="go"><svg class="i"><use href="#i-arrow"/></svg></span>
       </a>
     </nav>
+
+    <div class="label"><h2>Key numbers</h2><span class="hint">Swipe</span></div>
+    <div class="facts">
+      <div class="fact red"><div class="k">Specimen</div><div class="v">37–40<small>°C</small></div><div class="d">Draw to separation. Cooling gives a falsely low titer.</div></div>
+      <div class="fact"><div class="k">CA titer</div><div class="v">≥64<small>at 4 °C</small></div><div class="d">Supports CAD; often ≥512.</div></div>
+      <div class="fact"><div class="k">DAT</div><div class="v">C3d<small>+ / IgG −</small></div><div class="d">Monospecific strongly C3d positive.</div></div>
+      <div class="fact"><div class="k">Thermal amplitude</div><div class="v">≥28–30<small>°C</small></div><div class="d">Clinically significant; tracks severity.</div></div>
+      <div class="fact"><div class="k">Vaccinate</div><div class="v">≥2<small>weeks</small></div><div class="d">Before first sutimlimab dose.</div></div>
+    </div>
 
     <a class="deeper" href="https://www.thebloodproject.com/module/cad-module/" target="_blank" rel="noopener">
       <span class="dm"><svg aria-hidden="true"><use href="#tbp-mark"/></svg></span>
@@ -544,7 +633,7 @@
 
   <!-- ============ 3. CHECKLIST ============ -->
   <section id="checklist" class="view searchable" data-route="checklist" data-keywords="checklist workup diagnostic pretransfusion lab">
-      <header class="sec-head"><span class="eyebrow">Workup</span><h2>Diagnostic &amp; Pre-Transfusion Checklist</h2><p class="lede">Specimen handling, confirmation of cold-antibody hemolysis, and the clonal workup.</p></header>
+      <header class="sec-head"><span class="eyebrow">Workup</span><h2>Diagnostic &amp; Pre-Transfusion Checklist</h2><p class="lede">Specimen handling, confirmation of cold-antibody hemolysis, and the clonal workup.</p><button class="icon-btn share" type="button" data-share="checklist" aria-label="Share this page" title="Share"><svg class="i"><use href="#i-share"/></svg></button></header>
       <div class="sec-body">
         <div class="card progress-card" style="padding-bottom:18px">
           <span class="ring" id="progRing" data-t="0%" aria-hidden="true"></span>
@@ -561,7 +650,7 @@
         <div id="cl-clone"></div>
 
         <div class="btn-row">
-          <button class="btn" type="button" id="resetChecklist"><svg class="i" aria-hidden="true"><use href="#i-reset"/></svg>Reset checklist</button>
+          <button class="btn" type="button" id="copySummary"><svg class="i" aria-hidden="true"><use href="#i-copy"/></svg>Copy summary</button><button class="btn" type="button" id="resetChecklist"><svg class="i" aria-hidden="true"><use href="#i-reset"/></svg>Reset checklist</button>
         </div>
 
         <div class="callout small">
@@ -573,7 +662,7 @@
 
   <!-- ============ 4a. PRIMARY CAD vs SECONDARY CAS ============ -->
   <section id="etiology" class="view searchable" data-route="etiology" data-keywords="primary secondary cad cas etiology cause lymphoproliferative mycoplasma ebv lymphoma">
-      <header class="sec-head"><span class="eyebrow">Etiology</span><h2>Primary CAD vs. Secondary CAS</h2><p class="lede">A clonal B-cell disorder, or a syndrome secondary to infection or malignancy.</p></header>
+      <header class="sec-head"><span class="eyebrow">Etiology</span><h2>Primary CAD vs. Secondary CAS</h2><p class="lede">A clonal B-cell disorder, or a syndrome secondary to infection or malignancy.</p><button class="icon-btn share" type="button" data-share="etiology" aria-label="Share this page" title="Share"><svg class="i"><use href="#i-share"/></svg></button></header>
       <div class="sec-body">
         <p><strong>Cold agglutinin disease (CAD)</strong> is a clonal B-cell lymphoproliferative disorder (LPD). <strong>Cold agglutinin syndrome (CAS)</strong> is the same phenotype secondary to another condition. Both are complement-mediated (classical pathway) hemolytic anemias.</p>
 
@@ -605,7 +694,7 @@
 
   <!-- ============ 4b. MANAGEMENT ============ -->
   <section id="management" class="view searchable" data-route="management" data-keywords="management treatment therapy acute chronic">
-      <header class="sec-head"><span class="eyebrow">Treatment</span><h2>Acute &amp; Chronic Management</h2><p class="lede">From thermal protection to complement inhibition and B-cell-directed therapy.</p></header>
+      <header class="sec-head"><span class="eyebrow">Treatment</span><h2>Acute &amp; Chronic Management</h2><p class="lede">From thermal protection to complement inhibition and B-cell-directed therapy.</p><button class="icon-btn share" type="button" data-share="management" aria-label="Share this page" title="Share"><svg class="i"><use href="#i-share"/></svg></button></header>
       <div class="sec-body">
 
         <div class="sub searchable" data-keywords="thermal protection cold avoidance warm first line non-pharmacologic">
@@ -683,7 +772,7 @@
 
   <!-- ============ 4c. TRANSFUSION & SURGERY ============ -->
   <section id="transfusion" class="view searchable" data-route="transfusion" data-keywords="transfusion surgery protocol blood warmer washed rbc cardioplegia hypothermia bypass">
-      <header class="sec-head"><span class="eyebrow">Protocols</span><h2>Transfusion &amp; Surgery Protocols</h2><p class="lede">Warm everything: blood, fluids, the patient and the bypass circuit.</p></header>
+      <header class="sec-head"><span class="eyebrow">Protocols</span><h2>Transfusion &amp; Surgery Protocols</h2><p class="lede">Warm everything: blood, fluids, the patient and the bypass circuit.</p><button class="icon-btn share" type="button" data-share="transfusion" aria-label="Share this page" title="Share"><svg class="i"><use href="#i-share"/></svg></button></header>
       <div class="sec-body">
 
         <div class="sub searchable" data-keywords="transfusion blood warmer crossmatch compatibility prewarm adsorption alloantibody">
@@ -721,7 +810,7 @@
 
   <!-- ============ LAB PITFALLS ============ -->
   <section id="labs" class="view searchable" data-route="labs" data-keywords="lab pitfalls cbc artifact mcv mchc spurious thermal amplitude titer">
-      <header class="sec-head"><span class="eyebrow">Laboratory</span><h2>Lab Interpretation &amp; Pitfalls</h2><p class="lede">How cold agglutinins distort routine results, and what to expect.</p></header>
+      <header class="sec-head"><span class="eyebrow">Laboratory</span><h2>Lab Interpretation &amp; Pitfalls</h2><p class="lede">How cold agglutinins distort routine results, and what to expect.</p><button class="icon-btn share" type="button" data-share="labs" aria-label="Share this page" title="Share"><svg class="i"><use href="#i-share"/></svg></button></header>
       <div class="sec-body">
         <div class="tbl-wrap"><table class="tbl">
           <thead><tr><th>Test</th><th>Typical finding / pitfall</th></tr></thead>
@@ -767,11 +856,13 @@
     <div class="meta-row">
       <span class="pill net" id="netStatus"><i></i><span>Online</span></span>
       <span class="pill" id="swStatus">Offline cache: checking…</span>
-      <span class="pill">Reviewed Nov 2026 · v2.0</span>
+      <span class="pill">Reviewed Nov 2026 · v2.1</span>
     </div>
     <div class="foot-brand"><svg class="tbp-mark" aria-hidden="true"><use href="#tbp-mark"/></svg><svg class="tbp-word" viewBox="0 0 929 119" role="img" aria-label="The Blood Project"><use href="#tbp-word"/></svg></div>
   </div>
 </footer>
+
+<div class="toast" id="toast" role="status" aria-live="polite"><span id="toastMsg"></span><button type="button" id="toastBtn"></button></div>
 
 <nav class="tabbar" aria-label="Sections">
   <a href="#home" data-tab="home"><svg class="i"><use href="#i-home"/></svg>Home</a>
@@ -838,7 +929,7 @@
     var host = document.getElementById(cid);
     host.innerHTML = CHECKLISTS[cid].map(function (it) {
       var id = it[0], on = !!state[id];
-      return '<label class="check searchable' + (on ? ' done' : '') + '" data-id="' + id + '">' +
+      return '<label class="check searchable' + (on ? ' done' : '') + '" data-id="' + id + '" id="item-' + id + '">' +
         '<input type="checkbox" id="chk-' + id + '"' + (on ? ' checked' : '') + '>' +
         '<span class="box" aria-hidden="true">✓</span>' +
         '<span class="txt"><b>' + esc(it[1]) + '</b>' + (it[2] ? '<span>' + esc(it[2]) + '</span>' : '') + '</span>' +
@@ -846,6 +937,36 @@
     }).join('');
   });
 
+  /* ---------- Toast ---------- */
+  var toastEl = document.getElementById('toast'), toastMsg = document.getElementById('toastMsg'), toastBtn = document.getElementById('toastBtn');
+  var toastTimer, toastAction = null;
+  function toast(msg, btnLabel, action, ms) {
+    clearTimeout(toastTimer);
+    toastMsg.textContent = msg;
+    toastBtn.textContent = btnLabel || '';
+    toastAction = action || null;
+    toastEl.classList.add('show');
+    if (ms !== 0) toastTimer = setTimeout(function () { toastEl.classList.remove('show'); }, ms || 3200);
+  }
+  toastBtn.addEventListener('click', function () {
+    var a = toastAction; toastAction = null; toastEl.classList.remove('show');
+    if (a) a();
+  });
+
+  function copyText(text, okMsg) {
+    function fallback() {
+      var ta = document.createElement('textarea'); ta.value = text; ta.setAttribute('readonly', '');
+      ta.style.position = 'fixed'; ta.style.opacity = '0'; document.body.appendChild(ta); ta.select();
+      var ok = false; try { ok = document.execCommand('copy'); } catch (e) {}
+      document.body.removeChild(ta);
+      toast(ok ? okMsg : 'Copy not supported on this device');
+    }
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      navigator.clipboard.writeText(text).then(function () { toast(okMsg); }, fallback);
+    } else fallback();
+  }
+
+  /* ---------- Checklist ---------- */
   var mainIds = ['cl-pre', 'cl-dx', 'cl-hemo', 'cl-clone'];
   function updateProgress() {
     var total = 0, done = 0;
@@ -862,6 +983,14 @@
       ? (done === total ? 'All items complete. Reset between patients.' : done + ' of ' + total + ' done. Saved on this device.')
       : 'Tap items as you go. Saved on this device.';
   }
+  function paintChecks() {
+    Object.keys(CHECKLISTS).forEach(function (cid) {
+      CHECKLISTS[cid].forEach(function (it) {
+        var inp = document.getElementById('chk-' + it[0]);
+        if (inp) { inp.checked = !!state[it[0]]; inp.closest('.check').classList.toggle('done', inp.checked); }
+      });
+    });
+  }
 
   document.addEventListener('change', function (e) {
     var t = e.target;
@@ -874,18 +1003,31 @@
     save(); updateProgress();
   });
 
-  function resetGroup(ids) {
+  function resetGroup(ids, label) {
+    var before = JSON.parse(JSON.stringify(state)), changed = false;
     ids.forEach(function (cid) {
-      CHECKLISTS[cid].forEach(function (it) {
-        delete state[it[0]];
-        var inp = document.getElementById('chk-' + it[0]);
-        if (inp) { inp.checked = false; inp.closest('.check').classList.remove('done'); }
-      });
+      CHECKLISTS[cid].forEach(function (it) { if (state[it[0]]) changed = true; delete state[it[0]]; });
     });
-    save(); updateProgress();
+    if (!changed) { toast(label + ' is already empty'); return; }
+    save(); paintChecks(); updateProgress();
+    toast(label + ' reset', 'Undo', function () { state = before; save(); paintChecks(); updateProgress(); toast('Restored'); }, 6000);
   }
-  document.getElementById('resetChecklist').addEventListener('click', function () { resetGroup(mainIds); });
-  document.getElementById('resetVax').addEventListener('click', function () { resetGroup(['cl-vax']); });
+  document.getElementById('resetChecklist').addEventListener('click', function () { resetGroup(mainIds, 'Checklist'); });
+  document.getElementById('resetVax').addEventListener('click', function () { resetGroup(['cl-vax'], 'Vaccine checklist'); });
+
+  // Plain-text summary for a note or handoff. Contains no patient identifiers.
+  var GROUP_NAMES = { 'cl-pre': 'Specimen & pre-transfusion', 'cl-dx': 'Confirm cold-antibody hemolysis', 'cl-hemo': 'Hemolysis markers', 'cl-clone': 'Clonal / underlying cause workup', 'cl-vax': 'Vaccination before sutimlimab' };
+  function summary() {
+    var lines = ['CAD workup checklist (' + new Date().toLocaleDateString() + ')'];
+    mainIds.concat(['cl-vax']).forEach(function (cid) {
+      var items = CHECKLISTS[cid];
+      if (cid === 'cl-vax' && !items.some(function (it) { return state[it[0]]; })) return;
+      lines.push('', GROUP_NAMES[cid] + ':');
+      items.forEach(function (it) { lines.push((state[it[0]] ? '[x] ' : '[ ] ') + it[1]); });
+    });
+    return lines.join('\n');
+  }
+  document.getElementById('copySummary').addEventListener('click', function () { copyText(summary(), 'Summary copied. Paste it into your note.'); });
   updateProgress();
 
   /* ---------- Theme toggle ---------- */
@@ -906,20 +1048,79 @@
   });
   paintThemeBtn();
 
+  /* ---------- Critical alert: compact by default ---------- */
+  var alertEl = document.getElementById('alert'), alertBtn = document.getElementById('alertToggle');
+  function setAlert(open) {
+    alertEl.classList.toggle('expanded', open);
+    alertBtn.setAttribute('aria-expanded', String(open));
+    alertBtn.firstElementChild.textContent = open ? 'Show less' : 'Show details';
+  }
+  alertBtn.addEventListener('click', function () { setAlert(!alertEl.classList.contains('expanded')); });
+
   /* ---------- Views / routing ---------- */
   var body = document.body;
   var content = document.getElementById('content');
   var views = Array.prototype.slice.call(content.querySelectorAll('.view'));
   var tabs = Array.prototype.slice.call(document.querySelectorAll('.tabbar a'));
   var ROUTES = ['home', 'checklist', 'etiology', 'management', 'transfusion', 'labs'];
-  var route = null, pendingSub = null;
+  var route = null;
+  var input = document.getElementById('search');
+
+  function slug(s) { return s.toLowerCase().replace(/&/g, 'and').replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '').slice(0, 40); }
+
+  // Sticky sub-navigation chips for long pages (built from the subtopic headings)
+  var SHORT = {
+    'vax': 'Vaccines', 'thermal-protection': 'Thermal protection', 'acute-severe': 'Acute hemolysis', 'sutimlimab-anti': 'Sutimlimab',
+    'vaccination-before': 'Vaccines', 'b-cell-directed': 'B-cell therapy', 'why-steroids': 'Steroids & splenectomy',
+    'other-considerations': 'Other', 'transfusion': 'Transfusion', 'surgery-and': 'Surgery & anesthesia',
+    'cardiac-surgery': 'Cardiac / bypass', 'mycoplasma': 'Mycoplasma', 'ebv': 'EBV', 'aggressive-lymphoma': 'Lymphoma',
+    'specimen-and': 'Specimen', 'confirm-cold': 'Confirm', 'hemolysis-markers': 'Hemolysis markers', 'clonal': 'Clonal workup'
+  };
+  function shortName(id, text) {
+    for (var k in SHORT) if (id.indexOf(k) === 0) return SHORT[k];
+    return text.length > 26 ? text.slice(0, 24) + '…' : text;
+  }
+  var subnavs = [];
+  content.querySelectorAll('section.view').forEach(function (sec) {
+    var heads = Array.prototype.slice.call(sec.querySelectorAll('.sub > h3, .group-title'));
+    heads.forEach(function (h) {
+      if (!h.id) {
+        var txt = h.textContent.replace(/^\s*\d\s*/, '').trim();
+        h.id = slug(txt);
+        if (document.querySelectorAll('[id="' + h.id + '"]').length > 1) h.id = sec.id + '-' + h.id;
+      }
+    });
+    if (heads.length < 3) return;
+    var nav = document.createElement('nav');
+    nav.className = 'subnav'; nav.setAttribute('aria-label', 'On this page');
+    nav.innerHTML = heads.map(function (h) {
+      var txt = h.textContent.replace(/^\s*\d\s*/, '').trim();
+      return '<a href="#' + sec.id + '/' + h.id + '" data-target="' + h.id + '">' + esc(shortName(h.id, txt)) + '</a>';
+    }).join('');
+    sec.querySelector('.sec-head').insertAdjacentElement('afterend', nav);
+    subnavs.push({ nav: nav, heads: heads, sec: sec });
+  });
+  // Highlight the chip for the subtopic currently on screen
+  var spyTick = false;
+  function spy() {
+    spyTick = false;
+    subnavs.forEach(function (s) {
+      if (!s.sec.classList.contains('on')) return;
+      var cur = null, lim = 140;
+      s.heads.forEach(function (h) { if (h.getBoundingClientRect().top - lim <= 0) cur = h; });
+      Array.prototype.forEach.call(s.nav.children, function (a) {
+        var on = cur && a.getAttribute('data-target') === cur.id;
+        if (on && !a.classList.contains('on')) s.nav.scrollTo({ left: a.offsetLeft - (s.nav.clientWidth - a.offsetWidth) / 2, behavior: 'smooth' });
+        a.classList.toggle('on', !!on);
+      });
+    });
+  }
+  window.addEventListener('scroll', function () { if (!spyTick) { spyTick = true; requestAnimationFrame(spy); } }, { passive: true });
 
   function applyView() {
     var searching = body.classList.contains('searching');
     views.forEach(function (v) {
-      var on = searching
-        ? (v.classList.contains('home-hero') || v.classList.contains('searchable'))
-        : v.getAttribute('data-route') === route;
+      var on = searching ? v.classList.contains('home-hero') : v.getAttribute('data-route') === route;
       v.classList.toggle('on', on);
     });
     tabs.forEach(function (a) {
@@ -928,57 +1129,7 @@
     });
   }
 
-  function go() {
-    var h = (location.hash || '').slice(1);
-    var next = ROUTES.indexOf(h) !== -1 ? h : 'home';
-    var changed = next !== route;
-    if (changed && input.value) { input.value = ''; runSearch(true); }
-    route = next;
-    applyView();
-    if (pendingSub) {
-      var el = document.getElementById(pendingSub); pendingSub = null;
-      if (el) { requestAnimationFrame(function () { el.scrollIntoView({ block: 'start' }); }); return; }
-    }
-    if (changed) window.scrollTo(0, 0);
-  }
-
-  document.querySelectorAll('[data-sub]').forEach(function (a) {
-    a.addEventListener('click', function (e) {
-      e.preventDefault();
-      pendingSub = a.getAttribute('data-sub');
-      history.pushState(null, '', a.getAttribute('href'));
-      go();
-    });
-  });
-  // Tapping the current tab scrolls back to the top
-  tabs.forEach(function (a) {
-    a.addEventListener('click', function () {
-      if (input.value) { input.value = ''; runSearch(true); }
-      if (a.getAttribute('data-tab') === route) window.scrollTo({ top: 0, behavior: 'smooth' });
-    });
-  });
-
-  var appbar = document.getElementById('appbar');
-  window.addEventListener('scroll', function () { appbar.classList.toggle('scrolled', window.scrollY > 4); }, { passive: true });
-
-  /* ---------- Search / filter ---------- */
-  var input = document.getElementById('search');
-  var box = document.getElementById('searchBox');
-  var status = document.getElementById('searchStatus');
-  var noRes = document.getElementById('noResults');
-
-  // Leaf-level searchable units: elements with .searchable that contain no nested .searchable
-  var allSearchables = Array.prototype.slice.call(content.querySelectorAll('.searchable'));
-  function norm(s) { return s.toLowerCase().replace(/[°]/g, ' ').replace(/\s+/g, ' ').trim(); }
-  // Precompute searchable text. For containers, "own" text excludes nested searchable units.
-  var ownText = new Map();
-  allSearchables.forEach(function (el) {
-    var kw = el.getAttribute('data-keywords') || '';
-    var c = el.cloneNode(true);
-    Array.prototype.forEach.call(c.querySelectorAll('.searchable'), function (n) { n.remove(); });
-    ownText.set(el, norm(kw + ' ' + c.textContent));
-  });
-
+  var marked = null;
   function clearMarks() {
     var marks = content.querySelectorAll('mark[data-hl]');
     for (var i = 0; i < marks.length; i++) {
@@ -987,14 +1138,122 @@
       p.normalize();
     }
   }
+
+  function go() {
+    var parts = (location.hash || '').slice(1).split('/');
+    var next = ROUTES.indexOf(parts[0]) !== -1 ? parts[0] : (parts[0] === 'alert' ? 'home' : 'home');
+    var sub = parts[1] ? decodeURIComponent(parts[1]) : null;
+    var changed = next !== route;
+    route = next;
+    clearMarks();
+    if (route === 'home' && !sub && restoreQuery) { input.value = restoreQuery; restoreQuery = null; }
+    if (route === 'home' && input.value.trim()) { runSearch(); }
+    else { body.classList.remove('searching'); applyView(); }
+    var el = sub && document.getElementById(sub);
+    if (el) {
+      if (alertEl.contains(el)) setAlert(true);
+      if (pendingTerms) { highlight(el, pendingTerms); pendingTerms = null; }
+      requestAnimationFrame(function () {
+        var sec = el.closest('section.view'), nav = sec && sec.querySelector('.subnav');
+        var off = appbar.offsetHeight + (nav ? nav.offsetHeight : 0) + 12;
+        window.scrollTo(0, Math.max(0, el.getBoundingClientRect().top + window.scrollY - off));
+        el.classList.remove('flash'); void el.offsetWidth; el.classList.add('flash');
+      });
+      return;
+    }
+    if (changed) window.scrollTo(0, 0);
+  }
+
+  // Tapping the current tab scrolls back to the top; tapping Home clears the search
+  tabs.forEach(function (a) {
+    a.addEventListener('click', function () {
+      if (a.getAttribute('data-tab') === 'home') { restoreQuery = null; if (input.value) { input.value = ''; runSearch(); } }
+      if (a.getAttribute('data-tab') === route && !(location.hash.split('/')[1])) window.scrollTo({ top: 0, behavior: 'smooth' });
+    });
+  });
+
+  var appbar = document.getElementById('appbar');
+  window.addEventListener('scroll', function () { appbar.classList.toggle('scrolled', window.scrollY > 4); }, { passive: true });
+
+  /* ---------- Share ---------- */
+  function shareLink(title, hash) {
+    var url = location.href.split('#')[0] + hash;
+    if (navigator.share) {
+      navigator.share({ title: title, url: url }).catch(function () {});
+    } else copyText(url, 'Link copied');
+  }
+  content.querySelectorAll('[data-share]').forEach(function (b) {
+    b.addEventListener('click', function () {
+      var sec = document.getElementById(b.getAttribute('data-share'));
+      var title = sec.querySelector('.sec-head h2').textContent + ' · CAD Pocket Guide';
+      var sub = location.hash.split('/')[1];
+      shareLink(title, '#' + sec.id + (sub ? '/' + sub : ''));
+    });
+  });
+
+  /* ---------- Search: answer-style results ---------- */
+  var box = document.getElementById('searchBox');
+  var status = document.getElementById('searchStatus');
+  var noRes = document.getElementById('noResults');
+  var resultsEl = document.getElementById('results');
+  var pendingTerms = null, restoreQuery = null;
+  function norm(s) { return s.toLowerCase().replace(/[°]/g, ' ').replace(/\s+/g, ' ').trim(); }
+
+  // Index every readable block once: paragraphs, bullets, table rows, checklist items, callouts.
+  var SEL = '#refs li, .alert li, .sec-body > p, .sub > p, .sub li, .sec-body > .callout, .sub .callout, .tbl tbody tr, .check';
+  var blocks = Array.prototype.slice.call(content.querySelectorAll(SEL)).filter(function (el) {
+    return !el.parentElement.closest(SEL);
+  });
+  var bi = 0;
+  var index = blocks.map(function (el) {
+    if (!el.id) el.id = 'b' + (++bi);
+    var sec = el.closest('.view');
+    var sub = el.closest('.sub');
+    var title;
+    if (el.matches('.check')) title = el.querySelector('b').textContent;
+    else if (el.matches('tr')) title = el.cells[0].textContent;
+    else if (el.matches('.alert li')) title = el.querySelector('strong').textContent;
+    else if (sub && sub.querySelector('h3')) {
+      // nearest preceding h3 inside the subtopic
+      var hs = sub.querySelectorAll('h3'), t = hs[0];
+      for (var i = 0; i < hs.length; i++) if (hs[i].compareDocumentPosition(el) & Node.DOCUMENT_POSITION_FOLLOWING) t = hs[i];
+      title = t.textContent.replace(/^\s*\d\s*/, '');
+    } else title = sec.id === 'alert' ? 'Keep it warm' : (sec.querySelector('.sec-head h2') || {}).textContent || '';
+    var owner = el.closest('[data-keywords]');
+    var subHead = sub && sub.querySelector('h3') ? sub.querySelector('h3').textContent : '';
+    return {
+      el: el, route: sec.getAttribute('data-route'), secId: sec.id,
+      secName: sec.id === 'alert' ? 'Critical' : sec.id === 'refs' ? 'References' : (sec.querySelector('.sec-head h2') || {}).textContent,
+      title: title.trim(), text: snipText(el),
+      hay: norm(subHead + ' ' + el.textContent), kw: owner ? norm(owner.getAttribute('data-keywords') || '') : '', owner: owner
+    };
+  });
+
+  function snipText(el) {
+    var t;
+    if (el.matches('.check')) t = (el.querySelector('.txt > span') || el.querySelector('b')).textContent;
+    else if (el.matches('tr')) t = Array.prototype.slice.call(el.cells, 1).map(function (c) { return c.textContent; }).join(' · ');
+    else if (el.matches('.alert li')) t = el.querySelector('.more').textContent;
+    else t = el.textContent;
+    return t.replace(/\s+/g, ' ').trim();
+  }
+  function snippet(text, terms) {
+    var low = text.toLowerCase(), at = -1;
+    terms.forEach(function (t) { var i = low.indexOf(t); if (i !== -1 && (at === -1 || i < at)) at = i; });
+    var start = Math.max(0, at - 50), end = Math.min(text.length, start + 170);
+    if (start > 0) { var sp = text.indexOf(' ', start); if (sp !== -1 && sp < at) start = sp + 1; }
+    var s = (start > 0 ? '…' : '') + text.slice(start, end) + (end < text.length ? '…' : '');
+    var re = new RegExp('(' + terms.map(function (t) { return t.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'); }).join('|') + ')', 'gi');
+    return esc(s).replace(re, '<mark>$1</mark>');
+  }
+
   function highlight(el, terms) {
     if (!terms.length) return;
     var re = new RegExp('(' + terms.map(function (t) { return t.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'); }).join('|') + ')', 'gi');
     var walker = document.createTreeWalker(el, NodeFilter.SHOW_TEXT, {
       acceptNode: function (n) {
         if (!n.nodeValue.trim()) return NodeFilter.FILTER_REJECT;
-        var p = n.parentNode;
-        if (p.closest('.hidden-by-search, script, style, mark, svg')) return NodeFilter.FILTER_REJECT;
+        if (n.parentNode.closest('script, style, mark, svg')) return NodeFilter.FILTER_REJECT;
         return NodeFilter.FILTER_ACCEPT;
       }
     });
@@ -1017,68 +1276,59 @@
     });
   }
 
+  var lastTerms = [];
   var timer;
-  function runSearch(silent) {
+  function runSearch() {
     var q = norm(input.value);
     box.classList.toggle('has-text', q.length > 0);
-    clearMarks();
-    allSearchables.forEach(function (el) { el.classList.remove('hidden-by-search'); });
-    content.querySelectorAll('.group-title.hidden-by-search, .tbl-wrap.hidden-by-search').forEach(function (el) { el.classList.remove('hidden-by-search'); });
-
     if (!q) {
       body.classList.remove('searching');
-      status.textContent = '';
-      noRes.classList.remove('show');
-      if (!silent) applyView();
+      resultsEl.innerHTML = ''; status.textContent = ''; noRes.classList.remove('show');
+      applyView();
       return;
     }
     if (route !== 'home') { history.replaceState(null, '', '#home'); route = 'home'; }
     body.classList.add('searching');
-    var terms = q.split(' ').filter(Boolean);
-    function hasAll(t) { return terms.every(function (term) { return t.indexOf(term) !== -1; }); }
-    // A unit "self-matches" when its own text (excluding nested units) contains every term.
-    var matchSet = new Set();
-    allSearchables.forEach(function (el) { if (hasAll(ownText.get(el))) matchSet.add(el); });
-    // Visible if: it self-matches, OR any descendant self-matches, OR an ancestor self-matched
-    // (then the whole block is shown as context).
-    allSearchables.forEach(function (el) {
-      if (matchSet.has(el)) return;
-      var desc = el.querySelectorAll('.searchable');
-      for (var i = 0; i < desc.length; i++) if (matchSet.has(desc[i])) return;
-      for (var anc = el.parentElement; anc && anc !== content; anc = anc.parentElement) {
-        if (matchSet.has(anc)) return;
-      }
-      el.classList.add('hidden-by-search');
-    });
-
-    // Hide checklist group titles whose list is fully hidden
-    content.querySelectorAll('.group-title').forEach(function (gt) {
-      var list = gt.nextElementSibling;
-      var vis = list && list.querySelector('.check:not(.hidden-by-search)');
-      gt.classList.toggle('hidden-by-search', !vis);
-    });
-    // Hide tables whose rows are all hidden
-    content.querySelectorAll('.tbl-wrap').forEach(function (tw) {
-      var vis = tw.querySelector('tbody tr:not(.hidden-by-search)');
-      tw.classList.toggle('hidden-by-search', !vis);
-    });
-
     applyView();
+    var terms = q.split(' ').filter(Boolean);
+    lastTerms = terms;
+    function hasAll(t) { return terms.every(function (term) { return t.indexOf(term) !== -1; }); }
 
-    var visibleTop = Array.prototype.filter.call(content.children, function (c) {
-      return c.classList.contains('searchable') && !c.classList.contains('hidden-by-search');
+    var hits = index.filter(function (r) { return hasAll(r.hay); });
+    // Keyword-only matches (e.g. brand names, synonyms): one result per keyword owner
+    var seenOwner = new Set(hits.map(function (r) { return r.owner; }));
+    index.forEach(function (r) {
+      if (!r.owner || seenOwner.has(r.owner)) return;
+      if (hasAll(r.kw + ' ' + r.hay)) { hits.push(r); seenOwner.add(r.owner); }
     });
-    var leafHits = Array.prototype.filter.call(content.querySelectorAll('.searchable'), function (el) {
-      return !el.classList.contains('hidden-by-search') && matchSet.has(el);
-    }).length;
+    hits.sort(function (a, b) { return index.indexOf(a) - index.indexOf(b); });
 
-    noRes.classList.toggle('show', visibleTop.length === 0);
-    status.textContent = visibleTop.length === 0
+    var groups = [], bySec = {};
+    hits.slice(0, 40).forEach(function (r) {
+      if (!bySec[r.secId]) { bySec[r.secId] = { name: r.secName, items: [] }; groups.push(bySec[r.secId]); }
+      bySec[r.secId].items.push(r);
+    });
+    resultsEl.innerHTML = groups.map(function (g) {
+      return '<div class="rgroup"><h3><span>' + esc(g.name) + '</span><span>' + g.items.length + '</span></h3>' +
+        g.items.map(function (r) {
+          return '<button type="button" class="result" data-go="' + r.route + '/' + r.el.id + '"><b>' + esc(r.title) + '</b>' + snippet(r.text, terms) + '</button>';
+        }).join('') + '</div>';
+    }).join('');
+
+    noRes.classList.toggle('show', hits.length === 0);
+    status.textContent = hits.length === 0
       ? 'No matches for "' + input.value.trim() + '"'
-      : leafHits + ' match' + (leafHits === 1 ? '' : 'es') + ' in ' + visibleTop.length + ' section' + (visibleTop.length === 1 ? '' : 's');
-
-    visibleTop.forEach(function (el) { highlight(el, terms); });
+      : hits.length + ' result' + (hits.length === 1 ? '' : 's') + ' · tap one to jump there';
   }
+  resultsEl.addEventListener('click', function (e) {
+    var b = e.target.closest('.result');
+    if (!b) return;
+    input.blur();
+    pendingTerms = lastTerms;
+    restoreQuery = input.value;
+    input.value = ''; box.classList.remove('has-text');
+    location.hash = '#' + b.getAttribute('data-go');
+  });
 
   input.addEventListener('input', function () { clearTimeout(timer); timer = setTimeout(runSearch, 80); });
   input.addEventListener('keydown', function (e) {
@@ -1096,8 +1346,31 @@
   });
 
   window.addEventListener('hashchange', go);
-  window.addEventListener('popstate', go);
   go();
+
+  /* ---------- Install hint ---------- */
+  var installCard = document.getElementById('installCard');
+  var standalone = (window.matchMedia && matchMedia('(display-mode: standalone)').matches) || navigator.standalone === true;
+  var dismissed = false; try { dismissed = !!localStorage.getItem('cad-install-dismissed'); } catch (e) {}
+  var isIOS = /iphone|ipad|ipod/i.test(navigator.userAgent) || (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
+  function showInstall() { installCard.hidden = false; installCard.classList.add('on'); }
+  if (!standalone && !dismissed) {
+    if (isIOS) {
+      document.getElementById('installText').textContent = 'In Safari, tap Share, then "Add to Home Screen". Works offline.';
+      showInstall();
+    }
+    var deferred = null;
+    window.addEventListener('beforeinstallprompt', function (e) {
+      e.preventDefault(); deferred = e;
+      var ib = document.getElementById('installBtn'); ib.hidden = false;
+      ib.onclick = function () { deferred.prompt(); deferred.userChoice.finally(function () { installCard.hidden = true; }); };
+      showInstall();
+    });
+  }
+  document.getElementById('installClose').addEventListener('click', function () {
+    installCard.hidden = true;
+    try { localStorage.setItem('cad-install-dismissed', '1'); } catch (e) {}
+  });
 
   /* ---------- Online status ---------- */
   var net = document.getElementById('netStatus');
@@ -1110,21 +1383,30 @@
   window.addEventListener('offline', paintNet);
   paintNet();
 
-  /* ---------- Service worker ---------- */
+  /* ---------- Service worker + "new version" prompt ---------- */
   var swStatus = document.getElementById('swStatus');
   if ('serviceWorker' in navigator && (location.protocol === 'https:' || location.hostname === 'localhost' || location.hostname === '127.0.0.1')) {
+    var wantRefresh = false, refreshing = false;
+    navigator.serviceWorker.addEventListener('controllerchange', function () {
+      if (!wantRefresh || refreshing) return; refreshing = true; location.reload();
+    });
+    function offerUpdate(worker) {
+      swStatus.textContent = 'Update ready';
+      toast('A new version is available', 'Refresh', function () { wantRefresh = true; worker.postMessage('SKIP_WAITING'); }, 0);
+    }
     window.addEventListener('load', function () {
       navigator.serviceWorker.register('sw.js').then(function (reg) {
         swStatus.textContent = 'Offline ready';
+        if (reg.waiting && navigator.serviceWorker.controller) offerUpdate(reg.waiting);
         reg.addEventListener('updatefound', function () {
           var nw = reg.installing;
           if (!nw) return;
           nw.addEventListener('statechange', function () {
-            if (nw.state === 'installed' && navigator.serviceWorker.controller) {
-              swStatus.textContent = 'Update ready: reopen app';
-            }
+            if (nw.state === 'installed' && navigator.serviceWorker.controller) offerUpdate(nw);
           });
         });
+        // Check for new content whenever the app comes back to the foreground
+        document.addEventListener('visibilitychange', function () { if (!document.hidden) reg.update().catch(function () {}); });
       }).catch(function () { swStatus.textContent = 'Offline cache unavailable'; });
     });
   } else {
