@@ -5,7 +5,7 @@
  *  - Other same-origin GETs: cache-first, then network (and cache the response).
  *  - Old caches are removed on activate. Bump CACHE_VERSION when you change any file.
  */
-const CACHE_VERSION = 'cad-guide-v2.1.1';
+const CACHE_VERSION = 'cad-guide-v2.1.2';
 const PRECACHE = [
   './',
   './index.html',
