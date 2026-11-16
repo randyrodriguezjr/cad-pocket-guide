@@ -5,14 +5,22 @@
  *  - Other same-origin GETs: cache-first, then network (and cache the response).
  *  - Old caches are removed on activate. Bump CACHE_VERSION when you change any file.
  */
-const CACHE_VERSION = 'cad-guide-v1.0.1';
+const CACHE_VERSION = 'cad-guide-v2.0.0';
 const PRECACHE = [
   './',
   './index.html',
   './manifest.json',
   './icons/icon-192.png',
   './icons/icon-512.png',
-  './icons/apple-touch-icon.png'
+  './icons/apple-touch-icon.png',
+  './fonts/dm-serif-display-latin-400-normal.woff2',
+  './fonts/roboto-latin-500-normal.woff2',
+  './fonts/roboto-latin-700-normal.woff2',
+  './fonts/roboto-latin-800-normal.woff2',
+  './fonts/open-sans-latin-400-normal.woff2',
+  './fonts/open-sans-latin-400-italic.woff2',
+  './fonts/open-sans-latin-600-normal.woff2',
+  './fonts/open-sans-latin-700-normal.woff2'
 ];
 
 self.addEventListener('install', (event) => {

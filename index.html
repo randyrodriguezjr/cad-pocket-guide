@@ -3,17 +3,19 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>CAD Pocket Guide · Cold Agglutinin Disease</title>
+<title>CAD Pocket Guide · The Blood Project</title>
 <meta name="description" content="Offline clinical pocket guide for Cold Agglutinin Disease (CAD): diagnosis, specimen handling, management, transfusion and surgery.">
-<meta name="theme-color" content="#0b1220" media="(prefers-color-scheme: dark)">
-<meta name="theme-color" content="#0b4f8a" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#14181c" media="(prefers-color-scheme: dark)">
+<meta name="theme-color" content="#f6f5f4" media="(prefers-color-scheme: light)">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="mobile-web-app-capable" content="yes">
-<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
 <meta name="apple-mobile-web-app-title" content="CAD Guide">
 <link rel="manifest" href="manifest.json">
-<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 512 512'%3E%3Crect width='512' height='512' rx='96' fill='%230b4f8a'/%3E%3Cpath d='M256 92c-62 86-118 154-118 222a118 118 0 0 0 236 0c0-68-56-136-118-222z' fill='%23e53950'/%3E%3Cpath d='M256 236v120M196 296h120M214 254l84 84M298 254l-84 84' stroke='%23fff' stroke-width='18' stroke-linecap='round'/%3E%3C/svg%3E">
+<link rel="icon" href="icons/icon-192.png">
 <link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
+<link rel="preload" href="fonts/open-sans-latin-400-normal.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="fonts/dm-serif-display-latin-400-normal.woff2" as="font" type="font/woff2" crossorigin>
 <script>
   // Apply saved/system theme before first paint (prevents flash)
   (function () {
@@ -25,308 +27,513 @@
   })();
 </script>
 <style>
+  /* ---------- Fonts (bundled locally so the app works fully offline; SIL OFL) ---------- */
+  @font-face { font-family: 'DM Serif Display'; src: url(fonts/dm-serif-display-latin-400-normal.woff2) format('woff2'); font-weight: 400; font-display: swap; }
+  @font-face { font-family: 'Roboto'; src: url(fonts/roboto-latin-500-normal.woff2) format('woff2'); font-weight: 500; font-display: swap; }
+  @font-face { font-family: 'Roboto'; src: url(fonts/roboto-latin-700-normal.woff2) format('woff2'); font-weight: 700; font-display: swap; }
+  @font-face { font-family: 'Roboto'; src: url(fonts/roboto-latin-800-normal.woff2) format('woff2'); font-weight: 800; font-display: swap; }
+  @font-face { font-family: 'Open Sans'; src: url(fonts/open-sans-latin-400-normal.woff2) format('woff2'); font-weight: 400; font-display: swap; }
+  @font-face { font-family: 'Open Sans'; src: url(fonts/open-sans-latin-400-italic.woff2) format('woff2'); font-weight: 400; font-style: italic; font-display: swap; }
+  @font-face { font-family: 'Open Sans'; src: url(fonts/open-sans-latin-600-normal.woff2) format('woff2'); font-weight: 600; font-display: swap; }
+  @font-face { font-family: 'Open Sans'; src: url(fonts/open-sans-latin-700-normal.woff2) format('woff2'); font-weight: 700; font-display: swap; }
+
+  /* ---------- Design tokens (The Blood Project palette) ---------- */
   :root {
-    --radius: 14px;
+    --tbp-red: #D0463C;
+    --tbp-red-deep: #9E1B12;
+    --tbp-navy: #2D3E55;
+    --tbp-sky: #DEEAF5;
+    --tbp-ink: #2B2F31;
+    --tbp-slate: #414446;
+    --tbp-mist: #EDE9E9;
+
+    --serif: 'DM Serif Display', Georgia, 'Times New Roman', serif;
+    --display: 'Roboto', system-ui, -apple-system, 'Segoe UI', sans-serif;
+    --body: 'Open Sans', system-ui, -apple-system, 'Segoe UI', sans-serif;
+    --mono: ui-monospace, 'SF Mono', Menlo, Consolas, monospace;
+
+    --r-lg: 22px;
+    --r-md: 16px;
+    --r-sm: 12px;
     --tap: 48px;
-    --font: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
-    --mono: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+    --ease: cubic-bezier(.2, .8, .2, 1);
+    --maxw: 760px;
+    --tabbar-h: 68px;
   }
   [data-theme="light"] {
-    --bg: #f3f6fa;
-    --surface: #ffffff;
-    --surface-2: #e9eef5;
-    --text: #0a0f1a;
-    --muted: #3b4657;
-    --border: #b7c2d2;
-    --primary: #0b4f8a;
-    --primary-ink: #ffffff;
-    --accent: #0a6cc2;
-    --danger-bg: #fde8ea;
-    --danger-border: #b3001b;
-    --danger-ink: #6e0010;
-    --warn-bg: #fff4d6;
-    --warn-border: #8a5a00;
-    --warn-ink: #4a3000;
-    --ok: #0a6b2e;
-    --ok-bg: #e2f5e8;
-    --mark: #ffe066;
-    --mark-ink: #000;
-    --shadow: 0 1px 2px rgba(10, 20, 40, .08), 0 4px 14px rgba(10, 20, 40, .06);
+    --bg: #F6F5F4;
+    --bg-glow: radial-gradient(1200px 520px at 50% -180px, #E6EEF7 0%, rgba(230,238,247,0) 70%);
+    --surface: #FEFEFE;
+    --surface-2: #F4F4F4;
+    --surface-3: #EDEBEA;
+    --text: #2B2F31;
+    --text-2: #414446;
+    --muted: #6E7377;
+    --line: rgba(43, 47, 49, .09);
+    --line-2: rgba(43, 47, 49, .16);
+    --accent: #D0463C;
+    --accent-ink: #B5362D;
+    --accent-soft: rgba(208, 70, 60, .09);
+    --navy-soft: #DEEAF5;
+    --navy-ink: #2D3E55;
+    --shadow-sm: 0 1px 2px rgba(43,47,49,.05), 0 1px 1px rgba(43,47,49,.03);
+    --shadow: 0 1px 2px rgba(43,47,49,.04), 0 8px 24px -8px rgba(43,47,49,.10);
+    --shadow-lg: 0 2px 6px rgba(43,47,49,.05), 0 24px 48px -16px rgba(45,62,85,.22);
+    --glass: rgba(250, 249, 248, .86);
+    --mark: #FBE3B6;
+    --book: #2B2F31;
   }
   [data-theme="dark"] {
-    --bg: #070b14;
-    --surface: #0f1726;
-    --surface-2: #17223a;
-    --text: #f4f7fb;
-    --muted: #c0cad8;
-    --border: #3a4a66;
-    --primary: #6cb4ff;
-    --primary-ink: #04101f;
-    --accent: #8cc6ff;
-    --danger-bg: #3a0710;
-    --danger-border: #ff5c74;
-    --danger-ink: #ffd6dc;
-    --warn-bg: #352600;
-    --warn-border: #ffc93d;
-    --warn-ink: #ffeab0;
-    --ok: #5ee08a;
-    --ok-bg: #0d2e1a;
-    --mark: #ffd43b;
-    --mark-ink: #000;
-    --shadow: 0 1px 2px rgba(0, 0, 0, .5);
+    --bg: #121518;
+    --bg-glow: radial-gradient(1200px 520px at 50% -180px, rgba(45,62,85,.55) 0%, rgba(45,62,85,0) 70%);
+    --surface: #1B1F23;
+    --surface-2: #22272C;
+    --surface-3: #2A3036;
+    --text: #EFECEB;
+    --text-2: #D2D0CE;
+    --muted: #9AA1A8;
+    --line: rgba(255, 255, 255, .07);
+    --line-2: rgba(255, 255, 255, .13);
+    --accent: #E5584D;
+    --accent-ink: #F07A70;
+    --accent-soft: rgba(229, 88, 77, .14);
+    --navy-soft: rgba(222, 234, 245, .08);
+    --navy-ink: #B9CCE2;
+    --shadow-sm: 0 1px 0 rgba(255,255,255,.03) inset;
+    --shadow: 0 1px 0 rgba(255,255,255,.04) inset, 0 10px 30px -12px rgba(0,0,0,.6);
+    --shadow-lg: 0 1px 0 rgba(255,255,255,.05) inset, 0 24px 60px -20px rgba(0,0,0,.8);
+    --glass: rgba(24, 28, 31, .84);
+    --mark: rgba(251, 196, 98, .32);
+    --book: #EFECEB;
   }
 
-  * { box-sizing: border-box; }
-  html { -webkit-text-size-adjust: 100%; scroll-padding-top: 140px; }
+  /* ---------- Base ---------- */
+  *, *::before, *::after { box-sizing: border-box; }
+  html { -webkit-text-size-adjust: 100%; text-size-adjust: 100%; scroll-padding-top: 84px; }
   body {
-    margin: 0; background: var(--bg); color: var(--text);
-    font: 16px/1.5 var(--font);
-    padding-bottom: env(safe-area-inset-bottom);
+    margin: 0; background: var(--bg); background-image: var(--bg-glow); background-repeat: no-repeat;
+    color: var(--text); font: 400 16px/1.6 var(--body);
+    -webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale;
+    padding-bottom: calc(var(--tabbar-h) + env(safe-area-inset-bottom) + 16px);
+    transition: background-color .3s var(--ease), color .3s var(--ease);
   }
-  a { color: var(--accent); }
-  :focus-visible { outline: 3px solid var(--accent); outline-offset: 2px; }
-  .wrap { max-width: 760px; margin: 0 auto; padding: 0 14px; }
-
-  /* Header + sticky search */
-  .topbar {
-    position: sticky; top: 0; z-index: 50;
-    background: var(--bg);
-    border-bottom: 1px solid var(--border);
-    padding-top: env(safe-area-inset-top);
-  }
-  .brand { display: flex; align-items: center; gap: 10px; padding: 10px 0 6px; }
-  .brand svg { flex: 0 0 34px; }
-  .brand h1 { font-size: 1.08rem; line-height: 1.2; margin: 0; flex: 1; }
-  .brand h1 small { display: block; font-weight: 500; color: var(--muted); font-size: .8rem; }
-  .icon-btn {
-    min-width: var(--tap); min-height: var(--tap);
-    border: 1px solid var(--border); background: var(--surface); color: var(--text);
-    border-radius: 12px; font-size: 1.2rem; cursor: pointer;
-    display: inline-flex; align-items: center; justify-content: center;
-  }
-  .search-row { display: flex; gap: 8px; padding: 0 0 10px; }
-  .search {
-    flex: 1; position: relative;
-  }
-  .search input {
-    width: 100%; min-height: var(--tap);
-    font: inherit; font-size: 16px; /* prevents iOS zoom */
-    color: var(--text); background: var(--surface);
-    border: 2px solid var(--border); border-radius: 12px;
-    padding: 10px 40px 10px 40px;
-  }
-  .search input::-webkit-search-cancel-button, .search input::-webkit-search-decoration { -webkit-appearance: none; appearance: none; display: none; }
-  .search input:focus { border-color: var(--accent); outline: none; }
-  .search .mag { position: absolute; left: 12px; top: 50%; transform: translateY(-50%); color: var(--muted); pointer-events: none; }
-  .search .clear {
-    position: absolute; right: 4px; top: 50%; transform: translateY(-50%);
-    width: 40px; height: 40px; border: 0; background: transparent; color: var(--muted);
-    font-size: 1.3rem; cursor: pointer; display: none; border-radius: 10px;
-  }
-  .search.has-text .clear { display: block; }
-  .search-status { font-size: .82rem; color: var(--muted); padding: 0 0 8px; min-height: 1em; }
-  .search-status:empty { display: none; }
-  .chips { display: flex; gap: 6px; overflow-x: auto; padding: 0 0 10px; scrollbar-width: none; }
-  .chips::-webkit-scrollbar { display: none; }
-  .chips a {
-    flex: 0 0 auto; text-decoration: none; font-size: .82rem; font-weight: 600;
-    color: var(--text); background: var(--surface-2); border: 1px solid var(--border);
-    padding: 6px 12px; border-radius: 999px;
-  }
-
-  main { padding: 14px 0 24px; }
-  section, .card {
-    background: var(--surface); border: 1px solid var(--border);
-    border-radius: var(--radius); box-shadow: var(--shadow);
-    margin: 0 0 14px;
-  }
-  .card { padding: 14px 16px; }
-  h2 { font-size: 1.12rem; margin: 0; }
-  h3 { font-size: 1rem; margin: 16px 0 6px; }
-  p { margin: 6px 0; }
-  ul, ol { margin: 6px 0; padding-left: 1.25em; }
-  li { margin: 3px 0; }
+  .wrap { max-width: var(--maxw); margin: 0 auto; padding: 0 max(18px, env(safe-area-inset-left)) 0 max(18px, env(safe-area-inset-right)); }
+  a { color: var(--accent-ink); }
+  strong, b { font-weight: 700; color: var(--text); }
+  em { font-style: italic; }
+  h1, h2, h3 { margin: 0; color: var(--text); }
+  p { margin: 0 0 12px; }
+  ul { margin: 0; padding-left: 0; list-style: none; }
+  ul li { position: relative; padding-left: 20px; margin: 0 0 10px; color: var(--text-2); }
+  ul li::before { content: ''; position: absolute; left: 4px; top: .68em; width: 6px; height: 6px; border-radius: 50%; background: var(--accent); opacity: .8; }
+  .small { font-size: .875rem; }
   .muted { color: var(--muted); }
-  .small { font-size: .88rem; }
-  code, .mono { font-family: var(--mono); font-size: .9em; }
+  .mono { font-family: var(--mono); font-size: .8rem; color: var(--muted); }
+  mark[data-hl] { background: var(--mark); color: inherit; border-radius: 4px; padding: 0 2px; }
+  svg.i { width: 22px; height: 22px; fill: none; stroke: currentColor; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; flex: none; }
+  :focus-visible { outline: 2.5px solid var(--accent); outline-offset: 2px; border-radius: 8px; }
+  .sr-only { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
 
-  /* Critical alert */
+  /* ---------- Top app bar ---------- */
+  .appbar {
+    position: sticky; top: 0; z-index: 30;
+    padding-top: env(safe-area-inset-top);
+    background: var(--glass); -webkit-backdrop-filter: saturate(180%) blur(20px); backdrop-filter: saturate(180%) blur(20px);
+    border-bottom: 1px solid transparent; transition: border-color .2s;
+  }
+  .appbar.scrolled { border-bottom-color: var(--line); }
+  .appbar .wrap { display: flex; align-items: center; gap: 10px; height: 60px; }
+  .brand { display: flex; align-items: center; gap: 10px; text-decoration: none; color: var(--text); min-width: 0; flex: 1; }
+  .brand svg { width: 34px; height: 30px; flex: none; }
+  .brand .wm { display: flex; flex-direction: column; line-height: 1.05; min-width: 0; }
+  .brand .wm b { font: 400 1.18rem/1.1 var(--serif); letter-spacing: .005em; white-space: nowrap; }
+  .brand .wm b span { color: var(--tbp-red); }
+  .brand .wm small { font: 700 .62rem/1.2 var(--display); letter-spacing: .16em; text-transform: uppercase; color: var(--muted); margin-top: 3px; white-space: nowrap; }
+  .icon-btn {
+    width: 40px; height: 40px; border-radius: 50%; border: 1px solid var(--line); background: var(--surface);
+    color: var(--text-2); display: grid; place-items: center; cursor: pointer; box-shadow: var(--shadow-sm);
+    transition: transform .15s var(--ease), background .2s;
+  }
+  .icon-btn:active { transform: scale(.92); }
+  .icon-btn svg.i { width: 19px; height: 19px; }
+
+  /* ---------- Views ---------- */
+  main { padding-top: 8px; min-height: 60vh; }
+  .view { display: none; }
+  .view.on { display: block; animation: rise .38s var(--ease) both; }
+  @keyframes rise { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: none; } }
+
+  /* ---------- Home hero ---------- */
+  .hero { text-align: center; padding: 18px 0 0; }
+  .eyebrow {
+    display: inline-flex; align-items: center; gap: 8px;
+    font: 800 .7rem/1 var(--display); letter-spacing: .18em; text-transform: uppercase; color: var(--accent-ink);
+  }
+  .hero .eyebrow { background: var(--accent-soft); padding: 7px 12px; border-radius: 999px; }
+  .hero h1 { font: 400 clamp(2.25rem, 9vw, 3.4rem)/1.02 var(--serif); letter-spacing: -.01em; margin: 14px 0 8px; }
+  .hero h1 em { font-style: normal; color: var(--tbp-red); }
+  .hero p { color: var(--muted); max-width: 26em; margin: 0 auto 20px; font-size: .94rem; line-height: 1.5; }
+
+  /* Search: large, centered, AI-era input */
+  .search {
+    position: relative; display: flex; align-items: center; gap: 10px;
+    background: var(--surface); border: 1px solid var(--line-2); border-radius: 999px;
+    padding: 0 8px 0 18px; height: 58px; box-shadow: var(--shadow-lg);
+    transition: border-color .2s, box-shadow .2s;
+  }
+  .search:focus-within { border-color: color-mix(in srgb, var(--accent) 55%, transparent); box-shadow: var(--shadow-lg), 0 0 0 4px var(--accent-soft); }
+  .search > svg.i { color: var(--muted); }
+  .search input {
+    flex: 1; min-width: 0; height: 100%; border: 0; outline: 0; background: transparent; color: var(--text);
+    font: 400 1.02rem var(--body); -webkit-appearance: none; appearance: none;
+  }
+  .search input::placeholder { color: var(--muted); opacity: .85; }
+  .search input::-webkit-search-cancel-button { display: none; }
+  .search .clear {
+    width: 42px; height: 42px; border-radius: 50%; border: 0; background: var(--surface-2); color: var(--text-2);
+    display: none; place-items: center; cursor: pointer;
+  }
+  .search.has-text .clear { display: grid; }
+  .search .clear svg.i { width: 17px; height: 17px; }
+  .suggest { display: flex; gap: 8px; margin: 14px -18px 0; padding: 2px 18px; overflow-x: auto; scrollbar-width: none; }
+  .suggest::-webkit-scrollbar { display: none; }
+  @media (min-width: 560px) { .suggest { justify-content: center; } }
+  .suggest button {
+    border: 1px solid var(--line-2); background: transparent; color: var(--text-2); border-radius: 999px;
+    padding: 7px 14px; font: 600 .82rem var(--body); cursor: pointer; flex: none; white-space: nowrap; transition: background .15s, border-color .15s;
+  }
+  .suggest button:hover, .suggest button:active { background: var(--surface); border-color: var(--accent); color: var(--accent-ink); }
+  .search-status { min-height: 0; margin: 10px 2px 0; font: 600 .82rem var(--body); color: var(--muted); text-align: center; }
+  body.searching .home-only { display: none !important; }
+
+  /* ---------- Section label ---------- */
+  .label { display: flex; align-items: baseline; justify-content: space-between; margin: 30px 2px 12px; }
+  .label h2 { font: 800 .72rem/1 var(--display); letter-spacing: .16em; text-transform: uppercase; color: var(--muted); }
+
+  /* ---------- Critical alert (navy brand card) ---------- */
   .alert {
-    background: var(--danger-bg); border: 2px solid var(--danger-border);
-    border-left-width: 8px; color: var(--danger-ink);
-    border-radius: var(--radius); padding: 14px 16px; margin: 0 0 14px;
+    position: relative; overflow: hidden; margin-top: 16px;
+    background: linear-gradient(155deg, #34496A 0%, #2D3E55 46%, #232F41 100%); color: #F2F5F9;
+    border-radius: var(--r-lg); padding: 22px 20px 12px; box-shadow: var(--shadow-lg);
   }
-  .alert h2 { display: flex; align-items: center; gap: 8px; font-size: 1.05rem; text-transform: uppercase; letter-spacing: .03em; }
-  .alert ul { padding-left: 1.1em; }
-  .alert li { margin: 6px 0; }
-  .alert strong { color: inherit; }
-  .temp {
-    display: inline-block; font-weight: 800; font-family: var(--mono);
-    background: var(--danger-border); color: #fff; padding: 0 6px; border-radius: 6px;
+  .alert::after {
+    content: ''; position: absolute; right: -60px; top: -60px; width: 200px; height: 200px; border-radius: 50%;
+    background: radial-gradient(circle, rgba(208,70,60,.45), rgba(208,70,60,0) 70%); pointer-events: none;
   }
-  [data-theme="dark"] .temp { color: #1a0005; }
+  .alert-head { display: flex; align-items: center; gap: 12px; margin-bottom: 16px; position: relative; z-index: 1; }
+  .alert-ico { width: 42px; height: 42px; border-radius: 14px; background: var(--tbp-red); display: grid; place-items: center; color: #fff; box-shadow: 0 6px 16px -6px rgba(208,70,60,.8); }
+  .alert-head .eyebrow { color: #F5A49D; font-size: .64rem; }
+  .alert h2 { font: 400 1.6rem/1.1 var(--serif); color: #fff; margin-top: 4px; }
+  .alert ul { position: relative; z-index: 1; }
+  .alert li { color: rgba(242,245,249,.86); padding: 12px 0 12px 0; margin: 0; border-top: 1px solid rgba(255,255,255,.1); font-size: .94rem; }
+  .alert li::before { display: none; }
+  .alert li strong { color: #fff; }
+  .alert li > strong:first-child { display: block; font: 700 .98rem/1.35 var(--display); margin-bottom: 2px; }
+  .alert .temp { display: inline-block; background: rgba(208,70,60,.25); color: #FFD3CF; border-radius: 6px; padding: 0 6px; font-weight: 700; }
+  .alert mark[data-hl] { color: var(--tbp-ink); }
+
+  /* ---------- Quick facts (horizontal scroller) ---------- */
+  .facts { display: flex; gap: 12px; overflow-x: auto; scroll-snap-type: x mandatory; margin: 0 -18px; padding: 2px 18px 8px; scrollbar-width: none; }
+  .facts::-webkit-scrollbar { display: none; }
+  .fact {
+    flex: 0 0 168px; scroll-snap-align: start; background: var(--surface); border: 1px solid var(--line);
+    border-radius: var(--r-md); padding: 16px; box-shadow: var(--shadow);
+  }
+  .fact .k { font: 800 .62rem/1 var(--display); letter-spacing: .14em; text-transform: uppercase; color: var(--muted); }
+  .fact .v { font: 400 1.7rem/1.05 var(--serif); color: var(--text); margin: 10px 0 6px; }
+  .fact .v small { font: 700 .8rem var(--display); color: var(--muted); margin-left: 3px; }
+  .fact .d { font-size: .8rem; color: var(--muted); line-height: 1.4; }
+  .fact.red .v { color: var(--accent-ink); }
+
+  /* ---------- Topic tiles ---------- */
+  .tiles { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+  .tile {
+    position: relative; display: flex; flex-direction: column; gap: 14px; min-height: 148px;
+    background: var(--surface); border: 1px solid var(--line); border-radius: var(--r-lg); padding: 16px;
+    text-decoration: none; color: var(--text); box-shadow: var(--shadow);
+    transition: transform .18s var(--ease), box-shadow .2s;
+  }
+  .tile:active { transform: scale(.975); }
+  @media (hover: hover) { .tile:hover { transform: translateY(-2px); box-shadow: var(--shadow-lg); } }
+  .tile .ti { width: 42px; height: 42px; border-radius: 13px; display: grid; place-items: center; background: var(--navy-soft); color: var(--navy-ink); }
+  .tile.hot .ti { background: var(--accent-soft); color: var(--accent-ink); }
+  .tile b { font: 700 1rem/1.25 var(--display); display: block; }
+  .tile span.s { font-size: .8rem; color: var(--muted); line-height: 1.35; display: block; margin-top: 3px; }
+  .tile .go { position: absolute; right: 14px; top: 16px; color: var(--muted); opacity: .6; }
+  .tile .go svg.i { width: 18px; height: 18px; }
+  .tile.wide { grid-column: 1 / -1; flex-direction: row; align-items: center; min-height: 0; }
+  .tile.wide .go { position: static; margin-left: auto; }
+  .ring { --p: 0; width: 42px; height: 42px; border-radius: 50%; flex: none;
+    background: conic-gradient(var(--accent) calc(var(--p) * 1%), var(--surface-3) 0); display: grid; place-items: center; }
+  .ring::before { content: attr(data-t); width: 32px; height: 32px; border-radius: 50%; background: var(--surface); display: grid; place-items: center; font: 800 .62rem var(--display); color: var(--text-2); }
+
+  /* ---------- Section pages ---------- */
+  .sec-head { padding: 22px 2px 18px; }
+  .sec-head .eyebrow { margin-bottom: 10px; }
+  .sec-head h2 { font: 400 clamp(2rem, 7.6vw, 2.6rem)/1.06 var(--serif); letter-spacing: -.005em; }
+  .sec-head .lede { color: var(--muted); margin: 10px 0 0; font-size: .95rem; }
+  body.searching .sec-head { padding: 26px 2px 12px; border-top: 1px solid var(--line); margin-top: 18px; }
+  body.searching .sec-head h2 { font-size: 1.6rem; }
+  body.searching .sec-head .lede { display: none; }
+
+  .card, .sub {
+    background: var(--surface); border: 1px solid var(--line); border-radius: var(--r-lg);
+    padding: 20px 18px 10px; margin: 0 0 14px; box-shadow: var(--shadow);
+  }
+  .sec-body > p { color: var(--text-2); padding: 0 2px; }
+  .sub h3, .card h3 { font: 700 1.08rem/1.3 var(--display); margin: 0 0 12px; display: flex; align-items: center; gap: 10px; }
+  .sub h3 + p, .sub p { color: var(--text-2); }
+  .sub > h3:not(:first-child) { margin-top: 22px; padding-top: 18px; border-top: 1px solid var(--line); }
+  .num { width: 28px; height: 28px; border-radius: 9px; background: var(--accent-soft); color: var(--accent-ink); display: inline-grid; place-items: center; font: 800 .82rem var(--display); flex: none; }
 
   .callout {
-    background: var(--warn-bg); color: var(--warn-ink); border-left: 5px solid var(--warn-border);
-    padding: 10px 12px; border-radius: 10px; margin: 10px 0;
+    position: relative; background: var(--navy-soft); color: var(--text-2); border-radius: var(--r-md);
+    padding: 14px 16px 14px 18px; margin: 14px 0; line-height: 1.55;
   }
-  .callout.ok { background: var(--ok-bg); color: var(--text); border-left-color: var(--ok); }
+  .callout::before { content: ''; position: absolute; left: 0; top: 14px; bottom: 14px; width: 3px; border-radius: 3px; background: var(--tbp-navy); }
+  [data-theme="dark"] .callout::before { background: #8FA9C8; }
+  .callout strong { color: var(--navy-ink); }
+  .sub .callout { margin: 6px 0 14px; }
 
-  /* Collapsible sections */
-  details > summary {
-    list-style: none; cursor: pointer; user-select: none;
-    min-height: 56px; padding: 12px 16px;
-    display: flex; align-items: center; gap: 10px;
-  }
-  details > summary::-webkit-details-marker { display: none; }
-  details > summary .chev {
-    margin-left: auto; width: 28px; height: 28px; border-radius: 8px; flex: 0 0 28px;
-    display: inline-flex; align-items: center; justify-content: center;
-    background: var(--surface-2); transition: transform .2s;
-  }
-  details[open] > summary .chev { transform: rotate(180deg); }
-  details[open] > summary { border-bottom: 1px solid var(--border); }
-  .sec-body { padding: 4px 16px 14px; }
-  .badge {
-    display: inline-block; font-size: .72rem; font-weight: 700; letter-spacing: .03em;
-    padding: 2px 8px; border-radius: 999px; background: var(--primary); color: var(--primary-ink);
-    text-transform: uppercase; flex: 0 0 auto;
-  }
-  .sub {
-    border: 1px solid var(--border); border-radius: 12px; padding: 10px 12px; margin: 10px 0;
-    background: var(--bg);
-  }
-  .sub h3 { margin-top: 0; }
-
-  /* Tables -> stacked on mobile */
-  .tbl { width: 100%; border-collapse: collapse; margin: 8px 0; font-size: .93rem; }
-  .tbl th, .tbl td { text-align: left; vertical-align: top; padding: 8px; border-bottom: 1px solid var(--border); }
-  .tbl thead th { background: var(--surface-2); font-size: .82rem; text-transform: uppercase; letter-spacing: .03em; }
-  @media (max-width: 560px) {
+  /* ---------- Tables ---------- */
+  .tbl-wrap { border: 1px solid var(--line); border-radius: var(--r-md); overflow: hidden; margin: 6px 0 16px; background: var(--surface); }
+  .tbl { width: 100%; border-collapse: collapse; font-size: .9rem; }
+  .tbl th, .tbl td { text-align: left; vertical-align: top; padding: 12px 14px; border-bottom: 1px solid var(--line); color: var(--text-2); }
+  .tbl tbody tr:last-child td { border-bottom: 0; }
+  .tbl thead th { background: var(--surface-2); font: 800 .66rem/1.2 var(--display); text-transform: uppercase; letter-spacing: .12em; color: var(--muted); }
+  .tbl td:first-child { font-weight: 700; color: var(--text); font-family: var(--display); }
+  .tbl td:first-child .mono { font-family: var(--mono); font-weight: 400; }
+  @media (max-width: 600px) {
+    .tbl-wrap { border: 0; background: transparent; overflow: visible; }
     .tbl thead { display: none; }
     .tbl, .tbl tbody, .tbl tr, .tbl td { display: block; width: 100%; }
-    .tbl tr { border: 1px solid var(--border); border-radius: 10px; margin: 0 0 8px; padding: 4px 0; background: var(--bg); }
-    .tbl td { border: 0; padding: 4px 10px; }
-    .tbl td::before {
-      content: attr(data-label); display: block; font-size: .72rem; font-weight: 700;
-      text-transform: uppercase; letter-spacing: .04em; color: var(--muted);
+    .tbl tr { background: var(--surface-2); border-radius: var(--r-md); margin: 0 0 10px; padding: 14px 14px 6px; }
+    .sec-body > .tbl-wrap .tbl tr { background: var(--surface); border: 1px solid var(--line); box-shadow: var(--shadow-sm); }
+    .tbl td { border: 0; padding: 0 0 10px; }
+    .tbl td:first-child { font: 400 1.18rem/1.25 var(--serif); padding-bottom: 10px; margin-bottom: 10px; border-bottom: 1px solid var(--line); }
+    .tbl td:first-child .mono { display: block; font: 400 .76rem/1.4 var(--mono); margin-top: 4px; }
+    .tbl td:not(:first-child)::before {
+      content: attr(data-label); display: block; font: 800 .62rem/1 var(--display); letter-spacing: .14em;
+      text-transform: uppercase; color: var(--accent-ink); margin-bottom: 5px;
     }
   }
 
-  /* Checklist */
-  .progress { display: flex; align-items: center; gap: 10px; margin: 8px 0 4px; }
-  .bar { flex: 1; height: 10px; border-radius: 999px; background: var(--surface-2); overflow: hidden; border: 1px solid var(--border); }
-  .bar > span { display: block; height: 100%; width: 0; background: var(--ok); transition: width .25s; }
-  .count { font-weight: 700; font-variant-numeric: tabular-nums; font-size: .9rem; }
-  .group-title { margin: 14px 0 6px; font-size: .8rem; font-weight: 800; text-transform: uppercase; letter-spacing: .05em; color: var(--muted); }
+  /* ---------- Checklist ---------- */
+  .progress-card { display: flex; align-items: center; gap: 16px; }
+  .progress-card .ring { width: 64px; height: 64px; }
+  .progress-card .ring::before { width: 50px; height: 50px; font-size: .82rem; }
+  .progress-card .meta b { font: 700 1.02rem var(--display); display: block; }
+  .progress-card .meta span { font-size: .82rem; color: var(--muted); display: block; line-height: 1.45; margin-top: 2px; }
+  .bar { display: none; }
+  .group-title { font: 800 .68rem/1 var(--display); letter-spacing: .15em; text-transform: uppercase; color: var(--muted); margin: 22px 4px 10px; }
   .check {
-    display: flex; gap: 12px; align-items: flex-start;
-    padding: 10px 12px; margin: 6px 0; min-height: var(--tap);
-    border: 1px solid var(--border); border-radius: 12px; background: var(--bg);
-    cursor: pointer; -webkit-tap-highlight-color: transparent;
+    display: flex; gap: 14px; align-items: flex-start; padding: 14px 14px; margin: 0 0 8px; cursor: pointer;
+    background: var(--surface); border: 1px solid var(--line); border-radius: var(--r-md); box-shadow: var(--shadow-sm);
+    min-height: var(--tap); -webkit-tap-highlight-color: transparent; transition: border-color .2s, background .2s, transform .12s var(--ease);
   }
+  .sub .check { background: var(--surface-2); box-shadow: none; }
+  .check:active { transform: scale(.985); }
   .check input { position: absolute; opacity: 0; pointer-events: none; }
   .check .box {
-    flex: 0 0 26px; width: 26px; height: 26px; margin-top: 1px;
-    border: 2px solid var(--border); border-radius: 7px; background: var(--surface);
-    display: inline-flex; align-items: center; justify-content: center;
-    font-weight: 900; color: transparent;
+    width: 26px; height: 26px; border-radius: 50%; border: 2px solid var(--line-2); flex: none; margin-top: 1px;
+    display: grid; place-items: center; color: transparent; font: 800 .8rem var(--display);
+    transition: background .2s var(--ease), border-color .2s, color .2s, transform .25s var(--ease);
   }
-  .check input:checked + .box { background: var(--ok); border-color: var(--ok); color: #fff; }
-  [data-theme="dark"] .check input:checked + .box { color: #04150a; }
-  .check input:focus-visible + .box { outline: 3px solid var(--accent); outline-offset: 2px; }
-  .check .txt b { display: block; }
-  .check .txt span { display: block; font-size: .88rem; color: var(--muted); }
-  .check.done { border-color: var(--ok); background: var(--ok-bg); }
-  .check.done .txt b { text-decoration: line-through; text-decoration-thickness: 2px; }
+  .check input:focus-visible + .box { outline: 2.5px solid var(--accent); outline-offset: 2px; }
+  .check .txt b { display: block; font: 600 .95rem/1.4 var(--body); color: var(--text); }
+  .check .txt span { display: block; font-size: .82rem; color: var(--muted); margin-top: 3px; line-height: 1.45; }
+  .check.done { border-color: color-mix(in srgb, var(--accent) 35%, transparent); background: var(--accent-soft); }
+  .check.done .box { background: var(--accent); border-color: var(--accent); color: #fff; transform: scale(1.06); }
+  .check.done .txt b { color: var(--text-2); }
+  .btn-row { display: flex; gap: 10px; margin: 14px 0 6px; }
   .btn {
-    min-height: 44px; padding: 8px 14px; border-radius: 10px; font: inherit; font-weight: 600;
-    border: 1px solid var(--border); background: var(--surface-2); color: var(--text); cursor: pointer;
+    display: inline-flex; align-items: center; gap: 8px; height: 44px; padding: 0 18px; border-radius: 999px;
+    border: 1px solid var(--line-2); background: var(--surface); color: var(--text); font: 700 .88rem var(--display); cursor: pointer;
+    box-shadow: var(--shadow-sm); transition: transform .12s var(--ease);
   }
-  .btn-row { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 10px; }
+  .btn:active { transform: scale(.96); }
+  .btn svg.i { width: 17px; height: 17px; }
 
-  /* Search filtering */
-  .hidden-by-search { display: none !important; }
-  mark { background: var(--mark); color: var(--mark-ink); border-radius: 3px; padding: 0 1px; }
-  .no-results { display: none; text-align: center; padding: 24px 12px; }
+  /* ---------- References & footer ---------- */
+  #refs li { font-size: .86rem; }
+  .no-results { display: none; text-align: center; padding: 32px 20px; }
   .no-results.show { display: block; }
+  .no-results .big { font: 400 1.5rem var(--serif); margin-bottom: 6px; color: var(--text); }
+  footer { margin-top: 26px; padding-bottom: 8px; }
+  .disclaimer { border-radius: var(--r-md); background: var(--surface-2); padding: 16px 18px; font-size: .8rem; color: var(--muted); line-height: 1.55; }
+  .disclaimer strong { display: block; font: 800 .64rem/1 var(--display); letter-spacing: .15em; text-transform: uppercase; color: var(--text-2); margin-bottom: 8px; }
+  .meta-row { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; justify-content: center; margin: 16px 0 6px; font-size: .74rem; color: var(--muted); }
+  .pill { display: inline-flex; align-items: center; gap: 6px; padding: 5px 10px; border-radius: 999px; background: var(--surface); border: 1px solid var(--line); }
+  .net i { width: 7px; height: 7px; border-radius: 50%; background: #2FA36B; box-shadow: 0 0 0 3px rgba(47,163,107,.18); }
+  .net.off i { background: #D9A13B; box-shadow: 0 0 0 3px rgba(217,161,59,.2); }
+  .foot-brand { text-align: center; font: 400 .95rem var(--serif); color: var(--muted); margin-top: 14px; }
+  .foot-brand span { color: var(--tbp-red); }
 
-  footer {
-    border-top: 1px solid var(--border); padding: 16px 0 28px; font-size: .86rem; color: var(--muted);
+  /* ---------- Bottom tab bar ---------- */
+  .tabbar {
+    position: fixed; z-index: 40; left: 50%; transform: translateX(-50%);
+    bottom: calc(10px + env(safe-area-inset-bottom)); width: min(calc(100% - 20px), 520px);
+    display: grid; grid-template-columns: repeat(5, 1fr); height: var(--tabbar-h); padding: 6px;
+    background: var(--glass); -webkit-backdrop-filter: saturate(180%) blur(22px); backdrop-filter: saturate(180%) blur(22px);
+    border: 1px solid var(--line); border-radius: 26px; box-shadow: var(--shadow-lg);
   }
-  footer .disclaimer {
-    border: 2px solid var(--warn-border); background: var(--warn-bg); color: var(--warn-ink);
-    border-radius: 12px; padding: 12px 14px; margin-bottom: 10px;
+  .tabbar a {
+    display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 4px;
+    text-decoration: none; color: var(--muted); border-radius: 20px; font: 700 .64rem/1 var(--display); letter-spacing: .02em;
+    -webkit-tap-highlight-color: transparent; transition: color .2s, background .2s;
   }
-  footer .disclaimer strong { display: block; margin-bottom: 4px; }
-  .net { display: inline-flex; align-items: center; gap: 6px; font-weight: 600; }
-  .net i { width: 9px; height: 9px; border-radius: 50%; background: var(--ok); display: inline-block; }
-  .net.off i { background: var(--warn-border); }
+  .tabbar a svg.i { width: 22px; height: 22px; transition: transform .25s var(--ease); }
+  .tabbar a[aria-current="page"] { color: var(--accent-ink); background: var(--accent-soft); }
+  .tabbar a[aria-current="page"] svg.i { transform: translateY(-1px); stroke-width: 2.1; }
+  body.searching .tabbar a[aria-current="page"] { background: transparent; color: var(--muted); }
 
-  @media (prefers-reduced-motion: reduce) { * { transition: none !important; } }
+  .hidden-by-search { display: none !important; }
+
+  @media (min-width: 700px) {
+    .tiles { grid-template-columns: repeat(3, 1fr); }
+    .tile.wide { grid-column: span 3; }
+    .alert ul { columns: 2; column-gap: 28px; }
+    .alert li { break-inside: avoid; }
+  }
+  @media (prefers-reduced-motion: reduce) { *, *::before, *::after { animation: none !important; transition: none !important; } }
   @media print {
-    .topbar, .btn-row, .chips { display: none; }
-    details { display: block; }
-    details > .sec-body { display: block !important; }
+    .appbar, .tabbar, .hero, .facts, .tiles, .home-only, .btn-row, .meta-row { display: none !important; }
+    .view { display: block !important; }
+    body { background: #fff; padding: 0; }
+    .card, .sub, .alert { box-shadow: none; break-inside: avoid; }
   }
 </style>
 </head>
 <body>
 
-<header class="topbar">
+<!-- SVG icon sprite -->
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <symbol id="i-home" viewBox="0 0 24 24"><path d="M3 10.5 12 3l9 7.5"/><path d="M5 9.5V20a1 1 0 0 0 1 1h4v-6h4v6h4a1 1 0 0 0 1-1V9.5"/></symbol>
+  <symbol id="i-check" viewBox="0 0 24 24"><rect x="5" y="4" width="14" height="17" rx="2.5"/><path d="M9 4V3h6v1"/><path d="m9 13 2 2 4-4"/></symbol>
+  <symbol id="i-pill" viewBox="0 0 24 24"><rect x="2.5" y="8" width="19" height="8" rx="4" transform="rotate(-45 12 12)"/><path d="m8.5 8.5 7 7"/></symbol>
+  <symbol id="i-drop" viewBox="0 0 24 24"><path d="M12 3c-3.3 4.6-6 7.9-6 11a6 6 0 0 0 12 0c0-3.1-2.7-6.4-6-11Z"/><path d="M9.5 14.5a2.5 2.5 0 0 0 2.5 2.5"/></symbol>
+  <symbol id="i-flask" viewBox="0 0 24 24"><path d="M9 3h6"/><path d="M10 3v6L4.6 18.2A1.9 1.9 0 0 0 6.2 21h11.6a1.9 1.9 0 0 0 1.6-2.8L14 9V3"/><path d="M7.5 15h9"/></symbol>
+  <symbol id="i-branch" viewBox="0 0 24 24"><circle cx="6" cy="5" r="2"/><circle cx="6" cy="19" r="2"/><circle cx="18" cy="8" r="2"/><path d="M6 7v10"/><path d="M18 10c0 4-6 3-11.2 7.6"/></symbol>
+  <symbol id="i-book" viewBox="0 0 24 24"><path d="M3 5.5C6 4 9 4 12 6c3-2 6-2 9-.5V19c-3-1.5-6-1.5-9 .5-3-2-6-2-9-.5Z"/><path d="M12 6v13.5"/></symbol>
+  <symbol id="i-therm" viewBox="0 0 24 24"><path d="M14 14.8V5a2 2 0 0 0-4 0v9.8a4 4 0 1 0 4 0Z"/><path d="M12 9v7"/></symbol>
+  <symbol id="i-search" viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></symbol>
+  <symbol id="i-x" viewBox="0 0 24 24"><path d="M6 6l12 12M18 6 6 18"/></symbol>
+  <symbol id="i-moon" viewBox="0 0 24 24"><path d="M20 14.5A8 8 0 0 1 9.5 4a8 8 0 1 0 10.5 10.5Z"/></symbol>
+  <symbol id="i-sun" viewBox="0 0 24 24"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></symbol>
+  <symbol id="i-reset" viewBox="0 0 24 24"><path d="M3 12a9 9 0 1 0 3-6.7"/><path d="M3 4v5h5"/></symbol>
+  <symbol id="i-arrow" viewBox="0 0 24 24"><path d="M7 17 17 7M8 7h9v9"/></symbol>
+  <symbol id="i-shield" viewBox="0 0 24 24"><path d="M12 3 5 6v6c0 4.4 3 7.6 7 9 4-1.4 7-4.6 7-9V6Z"/><path d="m9 12 2 2 4-4"/></symbol>
+</svg>
+
+<header class="appbar" id="appbar">
   <div class="wrap">
-    <div class="brand">
-      <svg width="34" height="34" viewBox="0 0 512 512" aria-hidden="true">
-        <rect width="512" height="512" rx="110" fill="#0b4f8a"/>
-        <path d="M256 92c-62 86-118 154-118 222a118 118 0 0 0 236 0c0-68-56-136-118-222z" fill="#e53950"/>
-        <path d="M256 236v120M196 296h120M214 254l84 84M298 254l-84 84" stroke="#fff" stroke-width="18" stroke-linecap="round"/>
+    <a class="brand" href="#home" aria-label="CAD Pocket Guide home">
+      <svg viewBox="0 0 68 60" aria-hidden="true">
+        <path d="M4 14c9-3 18-2 27 4v38c-9-5-18-6-27-3Z" fill="var(--book)"/>
+        <path d="M64 14c-9-3-18-2-27 4v38c9-5 18-6 27-3Z" fill="var(--book)"/>
+        <path d="M34 2c-5 8-9 12-9 17.5a9 9 0 0 0 18 0C43 14 39 10 34 2Z" fill="#D0463C"/>
+        <path d="M34 26v31" stroke="var(--book)" stroke-width="3" stroke-linecap="round"/>
+        <circle cx="34" cy="20" r="2.6" fill="#fff"/>
       </svg>
-      <h1>CAD Pocket Guide<small>Cold Agglutinin Disease · Hematology</small></h1>
-      <button class="icon-btn" id="themeToggle" type="button" aria-label="Switch to dark theme" title="Toggle dark / light theme">🌙</button>
-    </div>
-    <div class="search-row">
-      <div class="search" id="searchBox">
-        <span class="mag" aria-hidden="true">🔍</span>
-        <input id="search" type="search" inputmode="search" autocomplete="off" spellcheck="false"
-               placeholder="Search: titer, sutimlimab, warmer…" aria-label="Search the guide" aria-describedby="searchStatus">
-        <button class="clear" id="clearSearch" type="button" aria-label="Clear search">✕</button>
-      </div>
-    </div>
-    <div class="search-status" id="searchStatus" role="status" aria-live="polite"></div>
-    <nav class="chips" aria-label="Jump to section">
-      <a href="#alert">Critical</a>
-      <a href="#checklist">Checklist</a>
-      <a href="#etiology">CAD vs CAS</a>
-      <a href="#management">Management</a>
-      <a href="#transfusion">Transfusion &amp; Surgery</a>
-      <a href="#labs">Lab Pitfalls</a>
-    </nav>
+      <span class="wm"><b>The <span>Blood</span> Project</b><small>CAD Pocket Guide</small></span>
+    </a>
+    <button class="icon-btn" id="searchJump" type="button" aria-label="Search the guide" title="Search"><svg class="i"><use href="#i-search"/></svg></button>
+    <button class="icon-btn" id="themeToggle" type="button" aria-label="Switch to dark theme" title="Toggle dark / light theme"><svg class="i"><use href="#i-moon"/></svg></button>
   </div>
 </header>
 
 <main class="wrap" id="content">
 
-  <!-- ============ 2. CRITICAL ALERT ============ -->
-  <div class="alert searchable" id="alert" role="alert" data-keywords="emergency critical sample specimen handling warm 37 cold iv fluids transfusion blood warmer hypothermia">
-    <h2><span aria-hidden="true">⚠️</span> Critical: Keep it warm</h2>
+  <!-- ============ HOME ============ -->
+  <div class="view home-hero" data-route="home">
+    <div class="hero">
+      <span class="eyebrow">Clinician Pocket Guide</span>
+      <h1>Cold Agglutinin <em>Disease</em></h1>
+      <p>Workup, treatment and transfusion protocols at the bedside. Works offline.</p>
+      <div class="search" id="searchBox">
+        <svg class="i" aria-hidden="true"><use href="#i-search"/></svg>
+        <input id="search" type="search" inputmode="search" autocomplete="off" spellcheck="false" enterkeyhint="search"
+               placeholder="Search titer, sutimlimab, warmer…" aria-label="Search the guide" aria-describedby="searchStatus">
+        <button class="clear" id="clearSearch" type="button" aria-label="Clear search"><svg class="i"><use href="#i-x"/></svg></button>
+      </div>
+      <div class="suggest home-only" aria-label="Suggested searches">
+        <button type="button" data-q="titer">Titer</button>
+        <button type="button" data-q="C3d">C3d</button>
+        <button type="button" data-q="sutimlimab">Sutimlimab</button>
+        <button type="button" data-q="rituximab">Rituximab</button>
+        <button type="button" data-q="cardioplegia">Cardioplegia</button>
+      </div>
+      <div class="search-status" id="searchStatus" role="status" aria-live="polite"></div>
+    </div>
+  </div>
+
+  <!-- ============ CRITICAL ALERT ============ -->
+  <section class="view alert searchable" data-route="home" id="alert" aria-labelledby="alertTitle" data-keywords="emergency critical sample specimen handling warm 37 cold iv fluids transfusion blood warmer hypothermia">
+    <div class="alert-head">
+      <span class="alert-ico"><svg class="i" aria-hidden="true"><use href="#i-therm"/></svg></span>
+      <div><span class="eyebrow">Critical · Read first</span><h2 id="alertTitle">Keep it warm</h2></div>
+    </div>
     <ul>
-      <li><strong>Specimen handling:</strong> keep blood samples at <span class="temp">37–40 °C</span> from the moment of draw until serum/plasma is separated. Pre-warm tubes, transport in a 37 °C water bath / heat block or warmed container, and tell the lab it is a cold agglutinin sample. Cooling causes in-vitro agglutination and adsorption of the antibody onto RBCs, giving a <strong>falsely low titer</strong> and spurious CBC results.</li>
-      <li><strong>No cold IV fluids or blood:</strong> warm ALL infusions and blood products with an <strong>approved in-line blood/fluid warmer</strong>. Never use improvised methods (microwave, hot water, radiators).</li>
-      <li><strong>Keep the patient warm:</strong> warm room, blankets, cover extremities/head; avoid cold exposure, ice packs and cold drinks. Avoid perioperative hypothermia.</li>
+      <li><strong>Specimen handling</strong> keep blood samples at <span class="temp">37–40 °C</span> from the moment of draw until serum/plasma is separated. Pre-warm tubes, transport in a 37 °C water bath / heat block or warmed container, and tell the lab it is a cold agglutinin sample. Cooling causes in-vitro agglutination and adsorption of the antibody onto RBCs, giving a <strong>falsely low titer</strong> and spurious CBC results.</li>
+      <li><strong>No cold IV fluids or blood</strong> warm ALL infusions and blood products with an <strong>approved in-line blood/fluid warmer</strong>. Never use improvised methods (microwave, hot water, radiators).</li>
+      <li><strong>Keep the patient warm</strong> warm room, blankets, cover extremities/head; avoid cold exposure, ice packs and cold drinks. Avoid perioperative hypothermia.</li>
       <li><strong>Do not withhold urgently needed transfusion</strong> because of crossmatch difficulty; discuss with the transfusion service and give warmed blood.</li>
     </ul>
+  </section>
+
+  <div class="view home-only" data-route="home">
+    <div class="label"><h2>Key numbers</h2></div>
+    <div class="facts">
+      <div class="fact red"><div class="k">Specimen</div><div class="v">37–40<small>°C</small></div><div class="d">Draw to separation. Cooling gives a falsely low titer.</div></div>
+      <div class="fact"><div class="k">CA titer</div><div class="v">≥64<small>at 4 °C</small></div><div class="d">Supports CAD; often ≥512.</div></div>
+      <div class="fact"><div class="k">DAT</div><div class="v">C3d<small>+ / IgG −</small></div><div class="d">Monospecific strongly C3d positive.</div></div>
+      <div class="fact"><div class="k">Thermal amplitude</div><div class="v">≥28–30<small>°C</small></div><div class="d">Clinically significant; tracks severity.</div></div>
+      <div class="fact"><div class="k">Vaccinate</div><div class="v">≥2<small>weeks</small></div><div class="d">Before first sutimlimab dose.</div></div>
+    </div>
+
+    <div class="label"><h2>Explore</h2></div>
+    <nav class="tiles" aria-label="Topics">
+      <a class="tile wide hot" href="#checklist">
+        <span class="ring" id="homeRing" data-t="0/19" aria-hidden="true"></span>
+        <span><b>Diagnostic &amp; pre-transfusion checklist</b><span class="s" id="homeProgText">Tap items as you go. Saved on this device.</span></span>
+        <span class="go"><svg class="i"><use href="#i-arrow"/></svg></span>
+      </a>
+      <a class="tile" href="#etiology">
+        <span class="ti"><svg class="i"><use href="#i-branch"/></svg></span>
+        <span><b>CAD vs. CAS</b><span class="s">Primary disease or secondary syndrome</span></span>
+        <span class="go"><svg class="i"><use href="#i-arrow"/></svg></span>
+      </a>
+      <a class="tile" href="#management">
+        <span class="ti"><svg class="i"><use href="#i-pill"/></svg></span>
+        <span><b>Management</b><span class="s">Thermal care, sutimlimab, B-cell therapy</span></span>
+        <span class="go"><svg class="i"><use href="#i-arrow"/></svg></span>
+      </a>
+      <a class="tile" href="#transfusion">
+        <span class="ti"><svg class="i"><use href="#i-drop"/></svg></span>
+        <span><b>Transfusion &amp; surgery</b><span class="s">Warmers, crossmatch, bypass</span></span>
+        <span class="go"><svg class="i"><use href="#i-arrow"/></svg></span>
+      </a>
+      <a class="tile" href="#labs">
+        <span class="ti"><svg class="i"><use href="#i-flask"/></svg></span>
+        <span><b>Lab pitfalls</b><span class="s">CBC artifacts, DAT, titer, smear</span></span>
+        <span class="go"><svg class="i"><use href="#i-arrow"/></svg></span>
+      </a>
+      <a class="tile wide" href="#management" data-sub="vax">
+        <span class="ti"><svg class="i"><use href="#i-shield"/></svg></span>
+        <span><b>Vaccines</b><span class="s">Before complement inhibition</span></span>
+        <span class="go"><svg class="i"><use href="#i-arrow"/></svg></span>
+      </a>
+    </nav>
   </div>
 
   <!-- ============ 3. CHECKLIST ============ -->
-  <section id="checklist" class="searchable" data-keywords="checklist workup diagnostic pretransfusion lab">
-    <details open>
-      <summary><span class="badge">Tap to check</span><h2>Diagnostic &amp; Pre-Transfusion Checklist</h2><span class="chev" aria-hidden="true">▾</span></summary>
+  <section id="checklist" class="view searchable" data-route="checklist" data-keywords="checklist workup diagnostic pretransfusion lab">
+      <header class="sec-head"><span class="eyebrow">Workup</span><h2>Diagnostic &amp; Pre-Transfusion Checklist</h2><p class="lede">Specimen handling, confirmation of cold-antibody hemolysis, and the clonal workup.</p></header>
       <div class="sec-body">
-        <div class="progress" aria-hidden="true">
-          <div class="bar"><span id="progBar"></span></div>
-          <span class="count" id="progCount">0 / 0</span>
+        <div class="card progress-card" style="padding-bottom:18px">
+          <span class="ring" id="progRing" data-t="0%" aria-hidden="true"></span>
+          <div class="meta"><b id="progCount">0 of 0 complete</b><span>Progress is saved on this device only. No patient data is stored or transmitted. Reset between patients.</span></div>
         </div>
-        <p class="small muted">Progress is saved on this device only. No patient data is stored or transmitted. Reset between patients.</p>
 
         <div class="group-title">Specimen &amp; pre-transfusion</div>
         <div id="cl-pre"></div>
@@ -338,7 +545,7 @@
         <div id="cl-clone"></div>
 
         <div class="btn-row">
-          <button class="btn" type="button" id="resetChecklist">↺ Reset checklist</button>
+          <button class="btn" type="button" id="resetChecklist"><svg class="i" aria-hidden="true"><use href="#i-reset"/></svg>Reset checklist</button>
         </div>
 
         <div class="callout small">
@@ -346,17 +553,15 @@
           chronic hemolysis + polyspecific DAT positive + monospecific DAT strongly positive for C3d (IgG negative or weakly positive) + cold agglutinin titer ≥64 at 4 °C, with no overt malignancy or infection. Thermal amplitude and clonal workup support the diagnosis and staging.
         </div>
       </div>
-    </details>
   </section>
 
   <!-- ============ 4a. PRIMARY CAD vs SECONDARY CAS ============ -->
-  <section id="etiology" class="searchable" data-keywords="primary secondary cad cas etiology cause lymphoproliferative mycoplasma ebv lymphoma">
-    <details>
-      <summary><span class="badge">Etiology</span><h2>Primary CAD vs. Secondary CAS</h2><span class="chev" aria-hidden="true">▾</span></summary>
+  <section id="etiology" class="view searchable" data-route="etiology" data-keywords="primary secondary cad cas etiology cause lymphoproliferative mycoplasma ebv lymphoma">
+      <header class="sec-head"><span class="eyebrow">Etiology</span><h2>Primary CAD vs. Secondary CAS</h2><p class="lede">A clonal B-cell disorder, or a syndrome secondary to infection or malignancy.</p></header>
       <div class="sec-body">
         <p><strong>Cold agglutinin disease (CAD)</strong> is a clonal B-cell lymphoproliferative disorder (LPD). <strong>Cold agglutinin syndrome (CAS)</strong> is the same phenotype secondary to another condition. Both are complement-mediated (classical pathway) hemolytic anemias.</p>
 
-        <table class="tbl">
+        <div class="tbl-wrap"><table class="tbl">
           <thead><tr><th>Feature</th><th>Primary CAD</th><th>Secondary CAS</th></tr></thead>
           <tbody>
             <tr class="searchable"><td data-label="Feature">Underlying cause</td><td data-label="Primary CAD">Clonal B-cell LPD of the bone marrow ("CAD-associated LPD"); usually low-grade, distinct from LPL (typically <em>MYD88</em> L265P negative)</td><td data-label="Secondary CAS">Infection (<em>Mycoplasma pneumoniae</em>, EBV, CMV, SARS-CoV-2), aggressive lymphoma (e.g. DLBCL), other malignancy, rarely autoimmune disease</td></tr>
@@ -364,7 +569,7 @@
             <tr class="searchable"><td data-label="Feature">Onset &amp; course</td><td data-label="Primary CAD">Older adults (median ~65–70 y); chronic, relapsing; worse in winter and with febrile illness / surgery</td><td data-label="Secondary CAS">Acute, often 1–3 weeks into infection; usually self-limited over weeks once the trigger resolves</td></tr>
             <tr class="searchable"><td data-label="Feature">Treatment focus</td><td data-label="Primary CAD">Thermal protection; complement inhibition (sutimlimab) or B-cell-directed therapy if symptomatic</td><td data-label="Secondary CAS">Treat the trigger (antimicrobial, lymphoma therapy); supportive care, warm transfusion if needed</td></tr>
           </tbody>
-        </table>
+        </table></div>
 
         <div class="sub searchable" data-keywords="mycoplasma pneumonia anti-I infection">
           <h3>Mycoplasma pneumoniae</h3>
@@ -380,17 +585,15 @@
         </div>
         <div class="callout small"><strong>Clinical clues to CAD:</strong> acrocyanosis and Raynaud-like symptoms in cold, hemoglobinuria after cold exposure, fatigue; anemia ranges from mild to transfusion-dependent. Circulatory symptoms are caused by RBC agglutination (not complement) and may persist despite complement blockade.</div>
       </div>
-    </details>
   </section>
 
   <!-- ============ 4b. MANAGEMENT ============ -->
-  <section id="management" class="searchable" data-keywords="management treatment therapy acute chronic">
-    <details>
-      <summary><span class="badge">Treatment</span><h2>Acute &amp; Chronic Management</h2><span class="chev" aria-hidden="true">▾</span></summary>
+  <section id="management" class="view searchable" data-route="management" data-keywords="management treatment therapy acute chronic">
+      <header class="sec-head"><span class="eyebrow">Treatment</span><h2>Acute &amp; Chronic Management</h2><p class="lede">From thermal protection to complement inhibition and B-cell-directed therapy.</p></header>
       <div class="sec-body">
 
         <div class="sub searchable" data-keywords="thermal protection cold avoidance warm first line non-pharmacologic">
-          <h3>1. Thermal protection (all patients)</h3>
+          <h3><span class="num">1</span>Thermal protection (all patients)</h3>
           <ul>
             <li>Avoid cold exposure: warm clothing, gloves, hats, scarves; warm indoor environment; avoid cold food/drinks.</li>
             <li>Warm IV fluids and blood products with an in-line warmer during any admission or procedure.</li>
@@ -401,7 +604,7 @@
         </div>
 
         <div class="sub searchable" data-keywords="acute severe crisis hemolysis plasma exchange plasmapheresis">
-          <h3>2. Acute severe hemolysis</h3>
+          <h3><span class="num">2</span>Acute severe hemolysis</h3>
           <ul>
             <li>Warmed RBC transfusion as needed; keep patient warm; treat triggers.</li>
             <li>Consider rapid-acting complement inhibition (sutimlimab; eculizumab has been used off-label).</li>
@@ -410,9 +613,9 @@
         </div>
 
         <div class="sub searchable" data-keywords="sutimlimab enjaymo anti-c1s complement inhibitor c1s classical pathway vaccination meningococcal pneumococcal hib">
-          <h3>3. Sutimlimab (anti-C1s)</h3>
+          <h3><span class="num">3</span>Sutimlimab (anti-C1s)</h3>
           <p>Humanized IgG4 monoclonal antibody against <strong>C1s</strong> that blocks the <strong>classical complement pathway</strong> upstream of C3 and C4. Approved (FDA 2022, EMA/others thereafter) to treat hemolysis in adults with CAD. Rapid effect: hemoglobin rises within 1–2 weeks and transfusion needs fall.</p>
-          <table class="tbl">
+          <div class="tbl-wrap"><table class="tbl">
             <thead><tr><th>Item</th><th>Details</th></tr></thead>
             <tbody>
               <tr class="searchable"><td data-label="Item">Dosing (label)</td><td data-label="Details">IV, weight-based: 39 to &lt;75 kg: 6,500 mg; ≥75 kg: 7,500 mg. Weekly for 2 doses, then every 2 weeks. Verify against current local label.</td></tr>
@@ -420,17 +623,17 @@
               <tr class="searchable"><td data-label="Item">Duration</td><td data-label="Details">Continuous therapy; hemolysis recurs within weeks after stopping. Monitor for recurrence after discontinuation.</td></tr>
               <tr class="searchable"><td data-label="Item">Risks</td><td data-label="Details">Serious infection with encapsulated bacteria; infusion/hypersensitivity reactions; possible development of autoimmune disease (e.g. SLE) noted in label. Monitor for infection.</td></tr>
             </tbody>
-          </table>
+          </table></div>
 
-          <h3>Vaccination before sutimlimab</h3>
+          <h3 id="vax">Vaccination before sutimlimab</h3>
           <p class="small">Vaccinate against encapsulated bacteria per current ACIP / national guidance for patients with complement deficiency, <strong>ideally ≥2 weeks before the first dose</strong>. If urgent therapy cannot wait, document the risk and vaccinate as soon as possible. Tap to track:</p>
           <div id="cl-vax"></div>
-          <div class="btn-row"><button class="btn" type="button" id="resetVax">↺ Reset vaccine checklist</button></div>
+          <div class="btn-row"><button class="btn" type="button" id="resetVax"><svg class="i" aria-hidden="true"><use href="#i-reset"/></svg>Reset vaccine checklist</button></div>
         </div>
 
         <div class="sub searchable" data-keywords="rituximab bendamustine b-cell directed clone anti-cd20 chemoimmunotherapy">
-          <h3>4. B-cell-directed therapy (target the clone)</h3>
-          <table class="tbl">
+          <h3><span class="num">4</span>B-cell-directed therapy (target the clone)</h3>
+          <div class="tbl-wrap"><table class="tbl">
             <thead><tr><th>Regimen</th><th>Notes</th></tr></thead>
             <tbody>
               <tr class="searchable"><td data-label="Regimen">Rituximab monotherapy<br><span class="mono small">375 mg/m² weekly × 4</span></td><td data-label="Regimen notes">First-line option for many. Response ~50%, complete responses uncommon, median response duration ~1–2 years; re-treatment often effective.</td></tr>
@@ -438,12 +641,12 @@
               <tr class="searchable"><td data-label="Regimen">Rituximab + fludarabine</td><td data-label="Regimen notes">Effective but more toxic; largely replaced by R-bendamustine.</td></tr>
               <tr class="searchable"><td data-label="Regimen">Others / investigational</td><td data-label="Regimen notes">Bortezomib, BTK inhibitors (e.g. ibrutinib), and newer complement inhibitors are in use off-label or in trials. Consider clinical trial enrollment.</td></tr>
             </tbody>
-          </table>
+          </table></div>
           <div class="callout small">Choice: complement inhibition gives rapid hemolysis control (bridge or long-term), while B-cell therapy aims at durable remission without continuous dosing. They can be sequenced or combined according to severity and patient fitness.</div>
         </div>
 
         <div class="sub searchable" data-keywords="steroids corticosteroids prednisone splenectomy ineffective avoid why liver kupffer">
-          <h3>5. Why steroids &amp; splenectomy generally fail</h3>
+          <h3><span class="num">5</span>Why steroids &amp; splenectomy generally fail</h3>
           <ul>
             <li><strong>Corticosteroids:</strong> low response rates; responses typically need unacceptably high doses, and steroid exposure adds infection, bone and metabolic toxicity. Not recommended for maintenance. (Unlike warm AIHA.)</li>
             <li><strong>Splenectomy:</strong> C3b-opsonized RBCs are cleared mainly by <strong>Kupffer cells in the liver</strong> (extravascular), plus some intravascular lysis via the membrane attack complex. The spleen is not the main site of destruction, so splenectomy is ineffective and adds infection risk.</li>
@@ -452,7 +655,7 @@
         </div>
 
         <div class="sub searchable" data-keywords="thrombosis vte anticoagulation risk monitoring follow up">
-          <h3>6. Other considerations</h3>
+          <h3><span class="num">6</span>Other considerations</h3>
           <ul>
             <li>CAD carries an increased risk of venous and arterial thrombosis; stay alert and use thromboprophylaxis when admitted or post-op per standard risk assessment.</li>
             <li>Monitor Hb, LDH, bilirubin, reticulocytes; repeat clonal assessment if the course changes.</li>
@@ -460,13 +663,11 @@
           </ul>
         </div>
       </div>
-    </details>
   </section>
 
   <!-- ============ 4c. TRANSFUSION & SURGERY ============ -->
-  <section id="transfusion" class="searchable" data-keywords="transfusion surgery protocol blood warmer washed rbc cardioplegia hypothermia bypass">
-    <details>
-      <summary><span class="badge">Protocols</span><h2>Transfusion &amp; Surgery Protocols</h2><span class="chev" aria-hidden="true">▾</span></summary>
+  <section id="transfusion" class="view searchable" data-route="transfusion" data-keywords="transfusion surgery protocol blood warmer washed rbc cardioplegia hypothermia bypass">
+      <header class="sec-head"><span class="eyebrow">Protocols</span><h2>Transfusion &amp; Surgery Protocols</h2><p class="lede">Warm everything: blood, fluids, the patient and the bypass circuit.</p></header>
       <div class="sec-body">
 
         <div class="sub searchable" data-keywords="transfusion blood warmer crossmatch compatibility prewarm adsorption alloantibody">
@@ -500,15 +701,13 @@
           </ul>
         </div>
       </div>
-    </details>
   </section>
 
   <!-- ============ LAB PITFALLS ============ -->
-  <section id="labs" class="searchable" data-keywords="lab pitfalls cbc artifact mcv mchc spurious thermal amplitude titer">
-    <details>
-      <summary><span class="badge">Lab</span><h2>Lab Interpretation &amp; Pitfalls</h2><span class="chev" aria-hidden="true">▾</span></summary>
+  <section id="labs" class="view searchable" data-route="labs" data-keywords="lab pitfalls cbc artifact mcv mchc spurious thermal amplitude titer">
+      <header class="sec-head"><span class="eyebrow">Laboratory</span><h2>Lab Interpretation &amp; Pitfalls</h2><p class="lede">How cold agglutinins distort routine results, and what to expect.</p></header>
       <div class="sec-body">
-        <table class="tbl">
+        <div class="tbl-wrap"><table class="tbl">
           <thead><tr><th>Test</th><th>Typical finding / pitfall</th></tr></thead>
           <tbody>
             <tr class="searchable"><td data-label="Test">Automated CBC</td><td data-label="Finding / pitfall">Agglutinates counted as single large cells: <strong>falsely low RBC count and hematocrit, falsely high MCV and very high MCHC</strong> (often &gt;36 g/dL). Re-run after warming the sample to 37 °C.</td></tr>
@@ -520,18 +719,18 @@
             <tr class="searchable"><td data-label="Test">Complement (C3, C4)</td><td data-label="Finding / pitfall">C4 often low (consumption); C3 may be low-normal. Acute-phase rises in C3 during febrile illness can worsen hemolysis.</td></tr>
             <tr class="searchable"><td data-label="Test">Chemistry</td><td data-label="Finding / pitfall">Visible agglutination can interfere with some analyzers; serum may show hemolysis if drawn/handled cold.</td></tr>
           </tbody>
-        </table>
+        </table></div>
       </div>
-    </details>
   </section>
 
+
   <div class="card no-results" id="noResults">
-    <p><strong>No matches.</strong></p>
+    <p class="big">No matches</p>
     <p class="muted small">Try a shorter keyword, e.g. "titer", "C3d", "warmer", "rituximab".</p>
   </div>
 
-  <div class="card small searchable" id="refs" data-keywords="references sources evidence guidelines">
-    <h2 style="font-size:1rem">Key references</h2>
+  <div class="view card small searchable" data-route="home" id="refs" style="margin-top:22px" data-keywords="references sources evidence guidelines">
+    <h3><svg class="i" aria-hidden="true"><use href="#i-book"/></svg>Key references</h3>
     <ul>
       <li>Berentsen S, et al. Diagnosis and management of CAD: recommendations from the First International Consensus Meeting. <em>Blood Rev.</em> 2020 / <em>Hemasphere</em> (and updates).</li>
       <li>Jäger U, et al. Diagnosis and treatment of autoimmune hemolytic anemia in adults: First International Consensus Meeting. <em>Blood Rev.</em> 2020;41:100648.</li>
@@ -542,20 +741,29 @@
   </div>
 </main>
 
-<!-- ============ 5. DISCLAIMER FOOTER ============ -->
+<!-- ============ DISCLAIMER FOOTER ============ -->
 <footer>
   <div class="wrap">
     <div class="disclaimer" role="note">
-      <strong>⚕️ Medical disclaimer</strong>
+      <strong>Medical disclaimer</strong>
       This guide is for educational and quick-reference use by healthcare professionals only. It does not replace clinical judgment, specialist consultation, or the current product label. Always verify doses, indications and procedures against your institutional protocols, transfusion service policies and up-to-date guidelines.
     </div>
-    <p>
-      <span class="net" id="netStatus"><i></i><span>Online</span></span>
-      · <span id="swStatus">Offline cache: checking…</span>
-    </p>
-    <p>Content reviewed November 2026 · v1.0</p>
+    <div class="meta-row">
+      <span class="pill net" id="netStatus"><i></i><span>Online</span></span>
+      <span class="pill" id="swStatus">Offline cache: checking…</span>
+      <span class="pill">Reviewed Nov 2026 · v2.0</span>
+    </div>
+    <div class="foot-brand">The <span>Blood</span> Project</div>
   </div>
 </footer>
+
+<nav class="tabbar" aria-label="Sections">
+  <a href="#home" data-tab="home"><svg class="i"><use href="#i-home"/></svg>Home</a>
+  <a href="#checklist" data-tab="checklist"><svg class="i"><use href="#i-check"/></svg>Workup</a>
+  <a href="#management" data-tab="management"><svg class="i"><use href="#i-pill"/></svg>Treat</a>
+  <a href="#transfusion" data-tab="transfusion"><svg class="i"><use href="#i-drop"/></svg>Transfuse</a>
+  <a href="#labs" data-tab="labs"><svg class="i"><use href="#i-flask"/></svg>Labs</a>
+</nav>
 
 <script>
 (function () {
@@ -609,6 +817,7 @@
     return String(s).replace(/[&<>"]/g, function (c) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]; });
   }
 
+
   Object.keys(CHECKLISTS).forEach(function (cid) {
     var host = document.getElementById(cid);
     host.innerHTML = CHECKLISTS[cid].map(function (it) {
@@ -627,8 +836,15 @@
     mainIds.forEach(function (cid) {
       CHECKLISTS[cid].forEach(function (it) { total++; if (state[it[0]]) done++; });
     });
-    document.getElementById('progCount').textContent = done + ' / ' + total;
-    document.getElementById('progBar').style.width = (total ? (done / total * 100) : 0) + '%';
+    var pct = total ? Math.round(done / total * 100) : 0;
+    document.getElementById('progCount').textContent = done + ' of ' + total + ' complete';
+    var ring = document.getElementById('progRing');
+    ring.style.setProperty('--p', pct); ring.setAttribute('data-t', pct + '%');
+    var hr = document.getElementById('homeRing');
+    hr.style.setProperty('--p', pct); hr.setAttribute('data-t', done + '/' + total);
+    document.getElementById('homeProgText').textContent = done
+      ? (done === total ? 'All items complete. Reset between patients.' : done + ' of ' + total + ' done. Saved on this device.')
+      : 'Tap items as you go. Saved on this device.';
   }
 
   document.addEventListener('change', function (e) {
@@ -660,9 +876,11 @@
   var root = document.documentElement, tbtn = document.getElementById('themeToggle');
   function paintThemeBtn() {
     var dark = root.getAttribute('data-theme') === 'dark';
-    tbtn.textContent = dark ? '☀️' : '🌙';
+    tbtn.querySelector('use').setAttribute('href', dark ? '#i-sun' : '#i-moon');
     tbtn.setAttribute('aria-label', dark ? 'Switch to light theme' : 'Switch to dark theme');
     tbtn.setAttribute('aria-pressed', String(dark));
+    var meta = document.querySelectorAll('meta[name="theme-color"]');
+    for (var i = 0; i < meta.length; i++) meta[i].setAttribute('content', dark ? '#121518' : '#f6f5f4');
   }
   tbtn.addEventListener('click', function () {
     var next = root.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
@@ -672,28 +890,78 @@
   });
   paintThemeBtn();
 
+  /* ---------- Views / routing ---------- */
+  var body = document.body;
+  var content = document.getElementById('content');
+  var views = Array.prototype.slice.call(content.querySelectorAll('.view'));
+  var tabs = Array.prototype.slice.call(document.querySelectorAll('.tabbar a'));
+  var ROUTES = ['home', 'checklist', 'etiology', 'management', 'transfusion', 'labs'];
+  var route = null, pendingSub = null;
+
+  function applyView() {
+    var searching = body.classList.contains('searching');
+    views.forEach(function (v) {
+      var on = searching
+        ? (v.classList.contains('home-hero') || v.classList.contains('searchable'))
+        : v.getAttribute('data-route') === route;
+      v.classList.toggle('on', on);
+    });
+    tabs.forEach(function (a) {
+      if (a.getAttribute('data-tab') === route) a.setAttribute('aria-current', 'page');
+      else a.removeAttribute('aria-current');
+    });
+  }
+
+  function go() {
+    var h = (location.hash || '').slice(1);
+    var next = ROUTES.indexOf(h) !== -1 ? h : 'home';
+    var changed = next !== route;
+    if (changed && input.value) { input.value = ''; runSearch(true); }
+    route = next;
+    applyView();
+    if (pendingSub) {
+      var el = document.getElementById(pendingSub); pendingSub = null;
+      if (el) { requestAnimationFrame(function () { el.scrollIntoView({ block: 'start' }); }); return; }
+    }
+    if (changed) window.scrollTo(0, 0);
+  }
+
+  document.querySelectorAll('[data-sub]').forEach(function (a) {
+    a.addEventListener('click', function (e) {
+      e.preventDefault();
+      pendingSub = a.getAttribute('data-sub');
+      history.pushState(null, '', a.getAttribute('href'));
+      go();
+    });
+  });
+  // Tapping the current tab scrolls back to the top
+  tabs.forEach(function (a) {
+    a.addEventListener('click', function () {
+      if (input.value) { input.value = ''; runSearch(true); }
+      if (a.getAttribute('data-tab') === route) window.scrollTo({ top: 0, behavior: 'smooth' });
+    });
+  });
+
+  var appbar = document.getElementById('appbar');
+  window.addEventListener('scroll', function () { appbar.classList.toggle('scrolled', window.scrollY > 4); }, { passive: true });
+
   /* ---------- Search / filter ---------- */
   var input = document.getElementById('search');
   var box = document.getElementById('searchBox');
   var status = document.getElementById('searchStatus');
   var noRes = document.getElementById('noResults');
-  var content = document.getElementById('content');
-  var detailsEls = Array.prototype.slice.call(content.querySelectorAll('details'));
-  var initialOpen = detailsEls.map(function (d) { return d.open; });
 
   // Leaf-level searchable units: elements with .searchable that contain no nested .searchable
   var allSearchables = Array.prototype.slice.call(content.querySelectorAll('.searchable'));
   function norm(s) { return s.toLowerCase().replace(/[°]/g, ' ').replace(/\s+/g, ' ').trim(); }
   // Precompute searchable text. For containers, "own" text excludes nested searchable units.
-  var fullText = new Map(), ownText = new Map();
+  var ownText = new Map();
   allSearchables.forEach(function (el) {
     var kw = el.getAttribute('data-keywords') || '';
-    fullText.set(el, norm(kw + ' ' + el.textContent));
     var c = el.cloneNode(true);
     Array.prototype.forEach.call(c.querySelectorAll('.searchable'), function (n) { n.remove(); });
     ownText.set(el, norm(kw + ' ' + c.textContent));
   });
-  function textOf(el) { return fullText.get(el); }
 
   function clearMarks() {
     var marks = content.querySelectorAll('mark[data-hl]');
@@ -710,7 +978,7 @@
       acceptNode: function (n) {
         if (!n.nodeValue.trim()) return NodeFilter.FILTER_REJECT;
         var p = n.parentNode;
-        if (p.closest('.hidden-by-search, script, style, mark, summary .chev')) return NodeFilter.FILTER_REJECT;
+        if (p.closest('.hidden-by-search, script, style, mark, svg')) return NodeFilter.FILTER_REJECT;
         return NodeFilter.FILTER_ACCEPT;
       }
     });
@@ -734,18 +1002,22 @@
   }
 
   var timer;
-  function runSearch() {
+  function runSearch(silent) {
     var q = norm(input.value);
     box.classList.toggle('has-text', q.length > 0);
     clearMarks();
     allSearchables.forEach(function (el) { el.classList.remove('hidden-by-search'); });
+    content.querySelectorAll('.group-title.hidden-by-search, .tbl-wrap.hidden-by-search').forEach(function (el) { el.classList.remove('hidden-by-search'); });
 
     if (!q) {
-      detailsEls.forEach(function (d, i) { d.open = initialOpen[i]; });
+      body.classList.remove('searching');
       status.textContent = '';
       noRes.classList.remove('show');
+      if (!silent) applyView();
       return;
     }
+    if (route !== 'home') { history.replaceState(null, '', '#home'); route = 'home'; }
+    body.classList.add('searching');
     var terms = q.split(' ').filter(Boolean);
     function hasAll(t) { return terms.every(function (term) { return t.indexOf(term) !== -1; }); }
     // A unit "self-matches" when its own text (excluding nested units) contains every term.
@@ -770,16 +1042,12 @@
       gt.classList.toggle('hidden-by-search', !vis);
     });
     // Hide tables whose rows are all hidden
-    content.querySelectorAll('table.tbl').forEach(function (tb) {
-      var vis = tb.querySelector('tbody tr:not(.hidden-by-search)');
-      tb.classList.toggle('hidden-by-search', !vis);
+    content.querySelectorAll('.tbl-wrap').forEach(function (tw) {
+      var vis = tw.querySelector('tbody tr:not(.hidden-by-search)');
+      tw.classList.toggle('hidden-by-search', !vis);
     });
 
-    // Open details that contain matches
-    detailsEls.forEach(function (d) {
-      var sec = d.closest('section');
-      d.open = !!(sec && !sec.classList.contains('hidden-by-search'));
-    });
+    applyView();
 
     var visibleTop = Array.prototype.filter.call(content.children, function (c) {
       return c.classList.contains('searchable') && !c.classList.contains('hidden-by-search');
@@ -797,18 +1065,23 @@
   }
 
   input.addEventListener('input', function () { clearTimeout(timer); timer = setTimeout(runSearch, 80); });
-  input.addEventListener('keydown', function (e) { if (e.key === 'Escape') { input.value = ''; runSearch(); } });
-  document.getElementById('clearSearch').addEventListener('click', function () { input.value = ''; runSearch(); input.focus(); });
-
-  // Jump chips: clear search and open the target section
-  document.querySelectorAll('.chips a').forEach(function (a) {
-    a.addEventListener('click', function () {
-      if (input.value) { input.value = ''; runSearch(); }
-      var tgt = document.querySelector(a.getAttribute('href'));
-      var d = tgt && tgt.querySelector('details');
-      if (d) d.open = true;
-    });
+  input.addEventListener('keydown', function (e) {
+    if (e.key === 'Escape') { input.value = ''; runSearch(); }
+    if (e.key === 'Enter') input.blur();
   });
+  document.getElementById('clearSearch').addEventListener('click', function () { input.value = ''; runSearch(); input.focus(); });
+  document.querySelectorAll('.suggest button').forEach(function (b) {
+    b.addEventListener('click', function () { input.value = b.getAttribute('data-q'); runSearch(); });
+  });
+  document.getElementById('searchJump').addEventListener('click', function () {
+    if (route !== 'home') { history.pushState(null, '', '#home'); go(); }
+    window.scrollTo(0, 0);
+    input.focus();
+  });
+
+  window.addEventListener('hashchange', go);
+  window.addEventListener('popstate', go);
+  go();
 
   /* ---------- Online status ---------- */
   var net = document.getElementById('netStatus');
@@ -826,22 +1099,23 @@
   if ('serviceWorker' in navigator && (location.protocol === 'https:' || location.hostname === 'localhost' || location.hostname === '127.0.0.1')) {
     window.addEventListener('load', function () {
       navigator.serviceWorker.register('sw.js').then(function (reg) {
-        swStatus.textContent = 'Offline cache: ready';
+        swStatus.textContent = 'Offline ready';
         reg.addEventListener('updatefound', function () {
           var nw = reg.installing;
           if (!nw) return;
           nw.addEventListener('statechange', function () {
             if (nw.state === 'installed' && navigator.serviceWorker.controller) {
-              swStatus.textContent = 'Update available: reload to apply';
+              swStatus.textContent = 'Update ready: reopen app';
             }
           });
         });
-      }).catch(function () { swStatus.textContent = 'Offline cache: unavailable'; });
+      }).catch(function () { swStatus.textContent = 'Offline cache unavailable'; });
     });
   } else {
-    swStatus.textContent = 'Offline cache: needs HTTPS';
+    swStatus.textContent = 'Offline cache needs HTTPS';
   }
 })();
 </script>
+
 </body>
 </html>
