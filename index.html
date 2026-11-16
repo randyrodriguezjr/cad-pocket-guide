@@ -418,11 +418,19 @@
 
   /* ---------- install card ---------- */
   .install { display: none; }
-  .install.on:not([hidden]) { display: flex; align-items: center; gap: 12px; margin-top: 14px; padding: 12px 12px 12px 14px;
-    background: var(--surface); border: 1px dashed var(--line-2); border-radius: var(--r-md); }
-  .install .ii { color: var(--accent-ink); display: grid; }
+  .install.on:not([hidden]) { display: flex; align-items: flex-start; gap: 10px; margin-top: 14px; padding: 14px 6px 14px 16px;
+    background: var(--navy-soft); border-radius: var(--r-md); }
+  .install .steps { margin: 8px 0 0; padding: 0; list-style: none; counter-reset: st; }
+  .install .steps li b { color: var(--text); }
+  .install .steps li { counter-increment: st; position: relative; padding: 0 0 6px 28px; margin: 0; color: var(--text-2); font-size: .85rem; line-height: 1.5; }
+  .install .steps li::before { content: counter(st); position: absolute; left: 0; top: 1px; width: 19px; height: 19px; border-radius: 50%;
+    background: var(--tbp-navy); color: #fff; font: 800 .68rem/19px var(--display); text-align: center; opacity: 1; }
+  .install .glyph { display: inline-grid; place-items: center; vertical-align: -5px; width: 22px; height: 22px; margin: 0 2px; color: #0A84FF; }
+  .install .glyph svg.i { width: 19px; height: 19px; }
+  .install .btn { margin-top: 10px; }
   .install .it { flex: 1; min-width: 0; font-size: .82rem; color: var(--muted); line-height: 1.4; }
-  .install .it b { display: block; font: 700 .9rem var(--display); color: var(--text); }
+  [hidden] { display: none !important; }
+  .install .it > b { display: block; font: 700 .9rem var(--display); color: var(--text); }
   .install .x { border: 0; background: none; color: var(--muted); width: 36px; height: 36px; display: grid; place-items: center; cursor: pointer; }
   .install .x svg.i { width: 18px; height: 18px; }
   .btn.sm { height: 36px; padding: 0 14px; font-size: .8rem; }
@@ -572,9 +580,7 @@
   </section>
 
   <div class="view home-only install" data-route="home" id="installCard" hidden>
-    <span class="ii"><svg class="i" aria-hidden="true"><use href="#i-plus"/></svg></span>
-    <div class="it"><b>Add to your home screen</b><span id="installText">Opens like an app and works offline.</span></div>
-    <button class="btn sm" type="button" id="installBtn" hidden>Install</button>
+    <div class="it"><b>Get the app on your home screen</b><span id="installText">Opens full screen and works offline.</span><button class="btn sm" type="button" id="installBtn" hidden>Install app</button></div>
     <button class="x" type="button" id="installClose" aria-label="Dismiss"><svg class="i"><use href="#i-x"/></svg></button>
   </div>
 
@@ -1356,7 +1362,10 @@
   function showInstall() { installCard.hidden = false; installCard.classList.add('on'); }
   if (!standalone && !dismissed) {
     if (isIOS) {
-      document.getElementById('installText').textContent = 'In Safari, tap Share, then "Add to Home Screen". Works offline.';
+      // iPhone/iPad browsers have no install button a web page can trigger: show the two steps instead.
+      document.getElementById('installText').innerHTML =
+        '<ol class="steps"><li>Tap the Share button <span class="glyph" aria-label="Share icon"><svg class="i"><use href="#i-share"/></svg></span> in the browser toolbar' +
+        ' (bottom of the screen in Safari).</li><li>Scroll down and tap <b>Add to Home Screen</b>, then <b>Add</b>.</li></ol>';
       showInstall();
     }
     var deferred = null;
