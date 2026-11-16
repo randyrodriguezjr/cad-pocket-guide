@@ -266,6 +266,20 @@
     background: conic-gradient(var(--accent) calc(var(--p) * 1%), var(--surface-3) 0); display: grid; place-items: center; }
   .ring::before { content: attr(data-t); width: 32px; height: 32px; border-radius: 50%; background: var(--surface); display: grid; place-items: center; font: 800 .62rem var(--display); color: var(--text-2); }
 
+  /* ---------- Go deeper (link to TBP module) ---------- */
+  .deeper {
+    display: flex; align-items: center; gap: 14px; margin-top: 12px; padding: 18px; border-radius: var(--r-lg);
+    background: #2B2F31; color: #F2F2F2; text-decoration: none; box-shadow: var(--shadow-lg); transition: transform .18s var(--ease);
+  }
+  [data-theme="dark"] .deeper { background: #262B30; border: 1px solid var(--line-2); }
+  .deeper:active { transform: scale(.98); }
+  .deeper .dm { width: 48px; height: 48px; border-radius: 14px; background: #FEFEFE; display: grid; place-items: center; flex: none; color: #2B2F31; }
+  .deeper .dm svg { width: 34px; height: 27px; }
+  .deeper .eyebrow { color: #F5A49D; font-size: .62rem; }
+  .deeper b { display: block; font: 400 1.2rem/1.2 var(--serif); color: #fff; margin-top: 5px; }
+  .deeper .s { display: block; font-size: .8rem; line-height: 1.4; color: rgba(242,242,242,.7); margin-top: 3px; }
+  .deeper .go { margin-left: auto; color: rgba(255,255,255,.7); }
+
   /* ---------- Section pages ---------- */
   .sec-head { padding: 22px 2px 18px; }
   .sec-head .eyebrow { margin-bottom: 10px; }
@@ -520,6 +534,12 @@
         <span class="go"><svg class="i"><use href="#i-arrow"/></svg></span>
       </a>
     </nav>
+
+    <a class="deeper" href="https://www.thebloodproject.com/module/cad-module/" target="_blank" rel="noopener">
+      <span class="dm"><svg aria-hidden="true"><use href="#tbp-mark"/></svg></span>
+      <span><span class="eyebrow">Go deeper</span><b>The Blood Project CAD module</b><span class="s">The full CAD learning module on thebloodproject.com</span></span>
+      <span class="go"><svg class="i"><use href="#i-arrow"/></svg></span>
+    </a>
   </div>
 
   <!-- ============ 3. CHECKLIST ============ -->
