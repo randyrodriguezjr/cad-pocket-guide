@@ -1,0 +1,847 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>CAD Pocket Guide · Cold Agglutinin Disease</title>
+<meta name="description" content="Offline clinical pocket guide for Cold Agglutinin Disease (CAD): diagnosis, specimen handling, management, transfusion and surgery.">
+<meta name="theme-color" content="#0b1220" media="(prefers-color-scheme: dark)">
+<meta name="theme-color" content="#0b4f8a" media="(prefers-color-scheme: light)">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="CAD Guide">
+<link rel="manifest" href="manifest.json">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 512 512'%3E%3Crect width='512' height='512' rx='96' fill='%230b4f8a'/%3E%3Cpath d='M256 92c-62 86-118 154-118 222a118 118 0 0 0 236 0c0-68-56-136-118-222z' fill='%23e53950'/%3E%3Cpath d='M256 236v120M196 296h120M214 254l84 84M298 254l-84 84' stroke='%23fff' stroke-width='18' stroke-linecap='round'/%3E%3C/svg%3E">
+<link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
+<script>
+  // Apply saved/system theme before first paint (prevents flash)
+  (function () {
+    try {
+      var t = localStorage.getItem('cad-theme');
+      if (!t) t = window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+      document.documentElement.setAttribute('data-theme', t);
+    } catch (e) { document.documentElement.setAttribute('data-theme', 'light'); }
+  })();
+</script>
+<style>
+  :root {
+    --radius: 14px;
+    --tap: 48px;
+    --font: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+    --mono: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  }
+  [data-theme="light"] {
+    --bg: #f3f6fa;
+    --surface: #ffffff;
+    --surface-2: #e9eef5;
+    --text: #0a0f1a;
+    --muted: #3b4657;
+    --border: #b7c2d2;
+    --primary: #0b4f8a;
+    --primary-ink: #ffffff;
+    --accent: #0a6cc2;
+    --danger-bg: #fde8ea;
+    --danger-border: #b3001b;
+    --danger-ink: #6e0010;
+    --warn-bg: #fff4d6;
+    --warn-border: #8a5a00;
+    --warn-ink: #4a3000;
+    --ok: #0a6b2e;
+    --ok-bg: #e2f5e8;
+    --mark: #ffe066;
+    --mark-ink: #000;
+    --shadow: 0 1px 2px rgba(10, 20, 40, .08), 0 4px 14px rgba(10, 20, 40, .06);
+  }
+  [data-theme="dark"] {
+    --bg: #070b14;
+    --surface: #0f1726;
+    --surface-2: #17223a;
+    --text: #f4f7fb;
+    --muted: #c0cad8;
+    --border: #3a4a66;
+    --primary: #6cb4ff;
+    --primary-ink: #04101f;
+    --accent: #8cc6ff;
+    --danger-bg: #3a0710;
+    --danger-border: #ff5c74;
+    --danger-ink: #ffd6dc;
+    --warn-bg: #352600;
+    --warn-border: #ffc93d;
+    --warn-ink: #ffeab0;
+    --ok: #5ee08a;
+    --ok-bg: #0d2e1a;
+    --mark: #ffd43b;
+    --mark-ink: #000;
+    --shadow: 0 1px 2px rgba(0, 0, 0, .5);
+  }
+
+  * { box-sizing: border-box; }
+  html { -webkit-text-size-adjust: 100%; scroll-padding-top: 140px; }
+  body {
+    margin: 0; background: var(--bg); color: var(--text);
+    font: 16px/1.5 var(--font);
+    padding-bottom: env(safe-area-inset-bottom);
+  }
+  a { color: var(--accent); }
+  :focus-visible { outline: 3px solid var(--accent); outline-offset: 2px; }
+  .wrap { max-width: 760px; margin: 0 auto; padding: 0 14px; }
+
+  /* Header + sticky search */
+  .topbar {
+    position: sticky; top: 0; z-index: 50;
+    background: var(--bg);
+    border-bottom: 1px solid var(--border);
+    padding-top: env(safe-area-inset-top);
+  }
+  .brand { display: flex; align-items: center; gap: 10px; padding: 10px 0 6px; }
+  .brand svg { flex: 0 0 34px; }
+  .brand h1 { font-size: 1.08rem; line-height: 1.2; margin: 0; flex: 1; }
+  .brand h1 small { display: block; font-weight: 500; color: var(--muted); font-size: .8rem; }
+  .icon-btn {
+    min-width: var(--tap); min-height: var(--tap);
+    border: 1px solid var(--border); background: var(--surface); color: var(--text);
+    border-radius: 12px; font-size: 1.2rem; cursor: pointer;
+    display: inline-flex; align-items: center; justify-content: center;
+  }
+  .search-row { display: flex; gap: 8px; padding: 0 0 10px; }
+  .search {
+    flex: 1; position: relative;
+  }
+  .search input {
+    width: 100%; min-height: var(--tap);
+    font: inherit; font-size: 16px; /* prevents iOS zoom */
+    color: var(--text); background: var(--surface);
+    border: 2px solid var(--border); border-radius: 12px;
+    padding: 10px 40px 10px 40px;
+  }
+  .search input::-webkit-search-cancel-button, .search input::-webkit-search-decoration { -webkit-appearance: none; appearance: none; display: none; }
+  .search input:focus { border-color: var(--accent); outline: none; }
+  .search .mag { position: absolute; left: 12px; top: 50%; transform: translateY(-50%); color: var(--muted); pointer-events: none; }
+  .search .clear {
+    position: absolute; right: 4px; top: 50%; transform: translateY(-50%);
+    width: 40px; height: 40px; border: 0; background: transparent; color: var(--muted);
+    font-size: 1.3rem; cursor: pointer; display: none; border-radius: 10px;
+  }
+  .search.has-text .clear { display: block; }
+  .search-status { font-size: .82rem; color: var(--muted); padding: 0 0 8px; min-height: 1em; }
+  .search-status:empty { display: none; }
+  .chips { display: flex; gap: 6px; overflow-x: auto; padding: 0 0 10px; scrollbar-width: none; }
+  .chips::-webkit-scrollbar { display: none; }
+  .chips a {
+    flex: 0 0 auto; text-decoration: none; font-size: .82rem; font-weight: 600;
+    color: var(--text); background: var(--surface-2); border: 1px solid var(--border);
+    padding: 6px 12px; border-radius: 999px;
+  }
+
+  main { padding: 14px 0 24px; }
+  section, .card {
+    background: var(--surface); border: 1px solid var(--border);
+    border-radius: var(--radius); box-shadow: var(--shadow);
+    margin: 0 0 14px;
+  }
+  .card { padding: 14px 16px; }
+  h2 { font-size: 1.12rem; margin: 0; }
+  h3 { font-size: 1rem; margin: 16px 0 6px; }
+  p { margin: 6px 0; }
+  ul, ol { margin: 6px 0; padding-left: 1.25em; }
+  li { margin: 3px 0; }
+  .muted { color: var(--muted); }
+  .small { font-size: .88rem; }
+  code, .mono { font-family: var(--mono); font-size: .9em; }
+
+  /* Critical alert */
+  .alert {
+    background: var(--danger-bg); border: 2px solid var(--danger-border);
+    border-left-width: 8px; color: var(--danger-ink);
+    border-radius: var(--radius); padding: 14px 16px; margin: 0 0 14px;
+  }
+  .alert h2 { display: flex; align-items: center; gap: 8px; font-size: 1.05rem; text-transform: uppercase; letter-spacing: .03em; }
+  .alert ul { padding-left: 1.1em; }
+  .alert li { margin: 6px 0; }
+  .alert strong { color: inherit; }
+  .temp {
+    display: inline-block; font-weight: 800; font-family: var(--mono);
+    background: var(--danger-border); color: #fff; padding: 0 6px; border-radius: 6px;
+  }
+  [data-theme="dark"] .temp { color: #1a0005; }
+
+  .callout {
+    background: var(--warn-bg); color: var(--warn-ink); border-left: 5px solid var(--warn-border);
+    padding: 10px 12px; border-radius: 10px; margin: 10px 0;
+  }
+  .callout.ok { background: var(--ok-bg); color: var(--text); border-left-color: var(--ok); }
+
+  /* Collapsible sections */
+  details > summary {
+    list-style: none; cursor: pointer; user-select: none;
+    min-height: 56px; padding: 12px 16px;
+    display: flex; align-items: center; gap: 10px;
+  }
+  details > summary::-webkit-details-marker { display: none; }
+  details > summary .chev {
+    margin-left: auto; width: 28px; height: 28px; border-radius: 8px; flex: 0 0 28px;
+    display: inline-flex; align-items: center; justify-content: center;
+    background: var(--surface-2); transition: transform .2s;
+  }
+  details[open] > summary .chev { transform: rotate(180deg); }
+  details[open] > summary { border-bottom: 1px solid var(--border); }
+  .sec-body { padding: 4px 16px 14px; }
+  .badge {
+    display: inline-block; font-size: .72rem; font-weight: 700; letter-spacing: .03em;
+    padding: 2px 8px; border-radius: 999px; background: var(--primary); color: var(--primary-ink);
+    text-transform: uppercase; flex: 0 0 auto;
+  }
+  .sub {
+    border: 1px solid var(--border); border-radius: 12px; padding: 10px 12px; margin: 10px 0;
+    background: var(--bg);
+  }
+  .sub h3 { margin-top: 0; }
+
+  /* Tables -> stacked on mobile */
+  .tbl { width: 100%; border-collapse: collapse; margin: 8px 0; font-size: .93rem; }
+  .tbl th, .tbl td { text-align: left; vertical-align: top; padding: 8px; border-bottom: 1px solid var(--border); }
+  .tbl thead th { background: var(--surface-2); font-size: .82rem; text-transform: uppercase; letter-spacing: .03em; }
+  @media (max-width: 560px) {
+    .tbl thead { display: none; }
+    .tbl, .tbl tbody, .tbl tr, .tbl td { display: block; width: 100%; }
+    .tbl tr { border: 1px solid var(--border); border-radius: 10px; margin: 0 0 8px; padding: 4px 0; background: var(--bg); }
+    .tbl td { border: 0; padding: 4px 10px; }
+    .tbl td::before {
+      content: attr(data-label); display: block; font-size: .72rem; font-weight: 700;
+      text-transform: uppercase; letter-spacing: .04em; color: var(--muted);
+    }
+  }
+
+  /* Checklist */
+  .progress { display: flex; align-items: center; gap: 10px; margin: 8px 0 4px; }
+  .bar { flex: 1; height: 10px; border-radius: 999px; background: var(--surface-2); overflow: hidden; border: 1px solid var(--border); }
+  .bar > span { display: block; height: 100%; width: 0; background: var(--ok); transition: width .25s; }
+  .count { font-weight: 700; font-variant-numeric: tabular-nums; font-size: .9rem; }
+  .group-title { margin: 14px 0 6px; font-size: .8rem; font-weight: 800; text-transform: uppercase; letter-spacing: .05em; color: var(--muted); }
+  .check {
+    display: flex; gap: 12px; align-items: flex-start;
+    padding: 10px 12px; margin: 6px 0; min-height: var(--tap);
+    border: 1px solid var(--border); border-radius: 12px; background: var(--bg);
+    cursor: pointer; -webkit-tap-highlight-color: transparent;
+  }
+  .check input { position: absolute; opacity: 0; pointer-events: none; }
+  .check .box {
+    flex: 0 0 26px; width: 26px; height: 26px; margin-top: 1px;
+    border: 2px solid var(--border); border-radius: 7px; background: var(--surface);
+    display: inline-flex; align-items: center; justify-content: center;
+    font-weight: 900; color: transparent;
+  }
+  .check input:checked + .box { background: var(--ok); border-color: var(--ok); color: #fff; }
+  [data-theme="dark"] .check input:checked + .box { color: #04150a; }
+  .check input:focus-visible + .box { outline: 3px solid var(--accent); outline-offset: 2px; }
+  .check .txt b { display: block; }
+  .check .txt span { display: block; font-size: .88rem; color: var(--muted); }
+  .check.done { border-color: var(--ok); background: var(--ok-bg); }
+  .check.done .txt b { text-decoration: line-through; text-decoration-thickness: 2px; }
+  .btn {
+    min-height: 44px; padding: 8px 14px; border-radius: 10px; font: inherit; font-weight: 600;
+    border: 1px solid var(--border); background: var(--surface-2); color: var(--text); cursor: pointer;
+  }
+  .btn-row { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 10px; }
+
+  /* Search filtering */
+  .hidden-by-search { display: none !important; }
+  mark { background: var(--mark); color: var(--mark-ink); border-radius: 3px; padding: 0 1px; }
+  .no-results { display: none; text-align: center; padding: 24px 12px; }
+  .no-results.show { display: block; }
+
+  footer {
+    border-top: 1px solid var(--border); padding: 16px 0 28px; font-size: .86rem; color: var(--muted);
+  }
+  footer .disclaimer {
+    border: 2px solid var(--warn-border); background: var(--warn-bg); color: var(--warn-ink);
+    border-radius: 12px; padding: 12px 14px; margin-bottom: 10px;
+  }
+  footer .disclaimer strong { display: block; margin-bottom: 4px; }
+  .net { display: inline-flex; align-items: center; gap: 6px; font-weight: 600; }
+  .net i { width: 9px; height: 9px; border-radius: 50%; background: var(--ok); display: inline-block; }
+  .net.off i { background: var(--warn-border); }
+
+  @media (prefers-reduced-motion: reduce) { * { transition: none !important; } }
+  @media print {
+    .topbar, .btn-row, .chips { display: none; }
+    details { display: block; }
+    details > .sec-body { display: block !important; }
+  }
+</style>
+</head>
+<body>
+
+<header class="topbar">
+  <div class="wrap">
+    <div class="brand">
+      <svg width="34" height="34" viewBox="0 0 512 512" aria-hidden="true">
+        <rect width="512" height="512" rx="110" fill="#0b4f8a"/>
+        <path d="M256 92c-62 86-118 154-118 222a118 118 0 0 0 236 0c0-68-56-136-118-222z" fill="#e53950"/>
+        <path d="M256 236v120M196 296h120M214 254l84 84M298 254l-84 84" stroke="#fff" stroke-width="18" stroke-linecap="round"/>
+      </svg>
+      <h1>CAD Pocket Guide<small>Cold Agglutinin Disease · Hematology</small></h1>
+      <button class="icon-btn" id="themeToggle" type="button" aria-label="Switch to dark theme" title="Toggle dark / light theme">🌙</button>
+    </div>
+    <div class="search-row">
+      <div class="search" id="searchBox">
+        <span class="mag" aria-hidden="true">🔍</span>
+        <input id="search" type="search" inputmode="search" autocomplete="off" spellcheck="false"
+               placeholder="Search: titer, sutimlimab, warmer…" aria-label="Search the guide" aria-describedby="searchStatus">
+        <button class="clear" id="clearSearch" type="button" aria-label="Clear search">✕</button>
+      </div>
+    </div>
+    <div class="search-status" id="searchStatus" role="status" aria-live="polite"></div>
+    <nav class="chips" aria-label="Jump to section">
+      <a href="#alert">Critical</a>
+      <a href="#checklist">Checklist</a>
+      <a href="#etiology">CAD vs CAS</a>
+      <a href="#management">Management</a>
+      <a href="#transfusion">Transfusion &amp; Surgery</a>
+      <a href="#labs">Lab Pitfalls</a>
+    </nav>
+  </div>
+</header>
+
+<main class="wrap" id="content">
+
+  <!-- ============ 2. CRITICAL ALERT ============ -->
+  <div class="alert searchable" id="alert" role="alert" data-keywords="emergency critical sample specimen handling warm 37 cold iv fluids transfusion blood warmer hypothermia">
+    <h2><span aria-hidden="true">⚠️</span> Critical: Keep it warm</h2>
+    <ul>
+      <li><strong>Specimen handling:</strong> keep blood samples at <span class="temp">37–40 °C</span> from the moment of draw until serum/plasma is separated. Pre-warm tubes, transport in a 37 °C water bath / heat block or warmed container, and tell the lab it is a cold agglutinin sample. Cooling causes in-vitro agglutination and adsorption of the antibody onto RBCs, giving a <strong>falsely low titer</strong> and spurious CBC results.</li>
+      <li><strong>No cold IV fluids or blood:</strong> warm ALL infusions and blood products with an <strong>approved in-line blood/fluid warmer</strong>. Never use improvised methods (microwave, hot water, radiators).</li>
+      <li><strong>Keep the patient warm:</strong> warm room, blankets, cover extremities/head; avoid cold exposure, ice packs and cold drinks. Avoid perioperative hypothermia.</li>
+      <li><strong>Do not withhold urgently needed transfusion</strong> because of crossmatch difficulty; discuss with the transfusion service and give warmed blood.</li>
+    </ul>
+  </div>
+
+  <!-- ============ 3. CHECKLIST ============ -->
+  <section id="checklist" class="searchable" data-keywords="checklist workup diagnostic pretransfusion lab">
+    <details open>
+      <summary><span class="badge">Tap to check</span><h2>Diagnostic &amp; Pre-Transfusion Checklist</h2><span class="chev" aria-hidden="true">▾</span></summary>
+      <div class="sec-body">
+        <div class="progress" aria-hidden="true">
+          <div class="bar"><span id="progBar"></span></div>
+          <span class="count" id="progCount">0 / 0</span>
+        </div>
+        <p class="small muted">Progress is saved on this device only. No patient data is stored or transmitted. Reset between patients.</p>
+
+        <div class="group-title">Specimen &amp; pre-transfusion</div>
+        <div id="cl-pre"></div>
+        <div class="group-title">Confirm cold-antibody hemolysis</div>
+        <div id="cl-dx"></div>
+        <div class="group-title">Hemolysis markers</div>
+        <div id="cl-hemo"></div>
+        <div class="group-title">Clonal / underlying cause workup</div>
+        <div id="cl-clone"></div>
+
+        <div class="btn-row">
+          <button class="btn" type="button" id="resetChecklist">↺ Reset checklist</button>
+        </div>
+
+        <div class="callout small">
+          <strong>Diagnostic criteria (consensus, e.g. First International Consensus Meeting / Berentsen et al.):</strong>
+          chronic hemolysis + polyspecific DAT positive + monospecific DAT strongly positive for C3d (IgG negative or weakly positive) + cold agglutinin titer ≥64 at 4 °C, with no overt malignancy or infection. Thermal amplitude and clonal workup support the diagnosis and staging.
+        </div>
+      </div>
+    </details>
+  </section>
+
+  <!-- ============ 4a. PRIMARY CAD vs SECONDARY CAS ============ -->
+  <section id="etiology" class="searchable" data-keywords="primary secondary cad cas etiology cause lymphoproliferative mycoplasma ebv lymphoma">
+    <details>
+      <summary><span class="badge">Etiology</span><h2>Primary CAD vs. Secondary CAS</h2><span class="chev" aria-hidden="true">▾</span></summary>
+      <div class="sec-body">
+        <p><strong>Cold agglutinin disease (CAD)</strong> is a clonal B-cell lymphoproliferative disorder (LPD). <strong>Cold agglutinin syndrome (CAS)</strong> is the same phenotype secondary to another condition. Both are complement-mediated (classical pathway) hemolytic anemias.</p>
+
+        <table class="tbl">
+          <thead><tr><th>Feature</th><th>Primary CAD</th><th>Secondary CAS</th></tr></thead>
+          <tbody>
+            <tr class="searchable"><td data-label="Feature">Underlying cause</td><td data-label="Primary CAD">Clonal B-cell LPD of the bone marrow ("CAD-associated LPD"); usually low-grade, distinct from LPL (typically <em>MYD88</em> L265P negative)</td><td data-label="Secondary CAS">Infection (<em>Mycoplasma pneumoniae</em>, EBV, CMV, SARS-CoV-2), aggressive lymphoma (e.g. DLBCL), other malignancy, rarely autoimmune disease</td></tr>
+            <tr class="searchable"><td data-label="Feature">Antibody</td><td data-label="Primary CAD">Monoclonal IgM-κ (>90%), usually anti-I; heavy chain often encoded by <em>IGHV4-34</em></td><td data-label="Secondary CAS">Polyclonal IgM after infection (Mycoplasma → anti-I; EBV → anti-i); monoclonal if lymphoma-driven</td></tr>
+            <tr class="searchable"><td data-label="Feature">Onset &amp; course</td><td data-label="Primary CAD">Older adults (median ~65–70 y); chronic, relapsing; worse in winter and with febrile illness / surgery</td><td data-label="Secondary CAS">Acute, often 1–3 weeks into infection; usually self-limited over weeks once the trigger resolves</td></tr>
+            <tr class="searchable"><td data-label="Feature">Treatment focus</td><td data-label="Primary CAD">Thermal protection; complement inhibition (sutimlimab) or B-cell-directed therapy if symptomatic</td><td data-label="Secondary CAS">Treat the trigger (antimicrobial, lymphoma therapy); supportive care, warm transfusion if needed</td></tr>
+          </tbody>
+        </table>
+
+        <div class="sub searchable" data-keywords="mycoplasma pneumonia anti-I infection">
+          <h3>Mycoplasma pneumoniae</h3>
+          <p>Most classic infectious cause. Anti-I cold agglutinins are common in Mycoplasma pneumonia but clinically significant hemolysis is uncommon. Hemolysis typically appears in the 2nd–3rd week and resolves within weeks.</p>
+        </div>
+        <div class="sub searchable" data-keywords="ebv epstein barr mononucleosis anti-i infection">
+          <h3>EBV / infectious mononucleosis</h3>
+          <p>Anti-i specificity. Usually transient. Also consider CMV, SARS-CoV-2 and other viral triggers.</p>
+        </div>
+        <div class="sub searchable" data-keywords="aggressive lymphoma dlbcl malignancy secondary">
+          <h3>Aggressive lymphoma / other malignancy</h3>
+          <p>Suspect with B symptoms, lymphadenopathy, splenomegaly, rapidly rising LDH out of proportion to hemolysis, or atypical presentation. Image (CT/PET) and biopsy as indicated; therapy is directed at the lymphoma.</p>
+        </div>
+        <div class="callout small"><strong>Clinical clues to CAD:</strong> acrocyanosis and Raynaud-like symptoms in cold, hemoglobinuria after cold exposure, fatigue; anemia ranges from mild to transfusion-dependent. Circulatory symptoms are caused by RBC agglutination (not complement) and may persist despite complement blockade.</div>
+      </div>
+    </details>
+  </section>
+
+  <!-- ============ 4b. MANAGEMENT ============ -->
+  <section id="management" class="searchable" data-keywords="management treatment therapy acute chronic">
+    <details>
+      <summary><span class="badge">Treatment</span><h2>Acute &amp; Chronic Management</h2><span class="chev" aria-hidden="true">▾</span></summary>
+      <div class="sec-body">
+
+        <div class="sub searchable" data-keywords="thermal protection cold avoidance warm first line non-pharmacologic">
+          <h3>1. Thermal protection (all patients)</h3>
+          <ul>
+            <li>Avoid cold exposure: warm clothing, gloves, hats, scarves; warm indoor environment; avoid cold food/drinks.</li>
+            <li>Warm IV fluids and blood products with an in-line warmer during any admission or procedure.</li>
+            <li>Folic acid supplementation for chronic hemolysis is common practice.</li>
+            <li>Treat intercurrent infections promptly (febrile illness can trigger hemolytic crises via acute-phase complement increase).</li>
+            <li>Mild, stable anemia without symptoms may need no drug therapy.</li>
+          </ul>
+        </div>
+
+        <div class="sub searchable" data-keywords="acute severe crisis hemolysis plasma exchange plasmapheresis">
+          <h3>2. Acute severe hemolysis</h3>
+          <ul>
+            <li>Warmed RBC transfusion as needed; keep patient warm; treat triggers.</li>
+            <li>Consider rapid-acting complement inhibition (sutimlimab; eculizumab has been used off-label).</li>
+            <li><strong>Therapeutic plasma exchange</strong> removes IgM rapidly but transiently. Use as a bridge (e.g. before urgent surgery); warm the circuit and replacement fluid. Albumin is the usual replacement fluid (plasma supplies complement).</li>
+          </ul>
+        </div>
+
+        <div class="sub searchable" data-keywords="sutimlimab enjaymo anti-c1s complement inhibitor c1s classical pathway vaccination meningococcal pneumococcal hib">
+          <h3>3. Sutimlimab (anti-C1s)</h3>
+          <p>Humanized IgG4 monoclonal antibody against <strong>C1s</strong> that blocks the <strong>classical complement pathway</strong> upstream of C3 and C4. Approved (FDA 2022, EMA/others thereafter) to treat hemolysis in adults with CAD. Rapid effect: hemoglobin rises within 1–2 weeks and transfusion needs fall.</p>
+          <table class="tbl">
+            <thead><tr><th>Item</th><th>Details</th></tr></thead>
+            <tbody>
+              <tr class="searchable"><td data-label="Item">Dosing (label)</td><td data-label="Details">IV, weight-based: 39 to &lt;75 kg: 6,500 mg; ≥75 kg: 7,500 mg. Weekly for 2 doses, then every 2 weeks. Verify against current local label.</td></tr>
+              <tr class="searchable"><td data-label="Item">Response</td><td data-label="Details">Improves Hb, bilirubin, fatigue (CARDINAL, CADENZA trials). Does not remove the clone or the cold agglutinin; does not reliably improve agglutination-driven circulatory symptoms (acrocyanosis).</td></tr>
+              <tr class="searchable"><td data-label="Item">Duration</td><td data-label="Details">Continuous therapy; hemolysis recurs within weeks after stopping. Monitor for recurrence after discontinuation.</td></tr>
+              <tr class="searchable"><td data-label="Item">Risks</td><td data-label="Details">Serious infection with encapsulated bacteria; infusion/hypersensitivity reactions; possible development of autoimmune disease (e.g. SLE) noted in label. Monitor for infection.</td></tr>
+            </tbody>
+          </table>
+
+          <h3>Vaccination before sutimlimab</h3>
+          <p class="small">Vaccinate against encapsulated bacteria per current ACIP / national guidance for patients with complement deficiency, <strong>ideally ≥2 weeks before the first dose</strong>. If urgent therapy cannot wait, document the risk and vaccinate as soon as possible. Tap to track:</p>
+          <div id="cl-vax"></div>
+          <div class="btn-row"><button class="btn" type="button" id="resetVax">↺ Reset vaccine checklist</button></div>
+        </div>
+
+        <div class="sub searchable" data-keywords="rituximab bendamustine b-cell directed clone anti-cd20 chemoimmunotherapy">
+          <h3>4. B-cell-directed therapy (target the clone)</h3>
+          <table class="tbl">
+            <thead><tr><th>Regimen</th><th>Notes</th></tr></thead>
+            <tbody>
+              <tr class="searchable"><td data-label="Regimen">Rituximab monotherapy<br><span class="mono small">375 mg/m² weekly × 4</span></td><td data-label="Regimen notes">First-line option for many. Response ~50%, complete responses uncommon, median response duration ~1–2 years; re-treatment often effective.</td></tr>
+              <tr class="searchable"><td data-label="Regimen">Rituximab + bendamustine<br><span class="mono small">R 375 mg/m² D1 + B 90 mg/m² D1–2, q28d × 4</span></td><td data-label="Regimen notes">Higher response (~70–80%) and complete remission (~40–50%) rates with durable remissions; more toxicity (cytopenias, infections). Preferred in fit patients needing deep/durable response. Onset of effect is slow (months).</td></tr>
+              <tr class="searchable"><td data-label="Regimen">Rituximab + fludarabine</td><td data-label="Regimen notes">Effective but more toxic; largely replaced by R-bendamustine.</td></tr>
+              <tr class="searchable"><td data-label="Regimen">Others / investigational</td><td data-label="Regimen notes">Bortezomib, BTK inhibitors (e.g. ibrutinib), and newer complement inhibitors are in use off-label or in trials. Consider clinical trial enrollment.</td></tr>
+            </tbody>
+          </table>
+          <div class="callout small">Choice: complement inhibition gives rapid hemolysis control (bridge or long-term), while B-cell therapy aims at durable remission without continuous dosing. They can be sequenced or combined according to severity and patient fitness.</div>
+        </div>
+
+        <div class="sub searchable" data-keywords="steroids corticosteroids prednisone splenectomy ineffective avoid why liver kupffer">
+          <h3>5. Why steroids &amp; splenectomy generally fail</h3>
+          <ul>
+            <li><strong>Corticosteroids:</strong> low response rates; responses typically need unacceptably high doses, and steroid exposure adds infection, bone and metabolic toxicity. Not recommended for maintenance. (Unlike warm AIHA.)</li>
+            <li><strong>Splenectomy:</strong> C3b-opsonized RBCs are cleared mainly by <strong>Kupffer cells in the liver</strong> (extravascular), plus some intravascular lysis via the membrane attack complex. The spleen is not the main site of destruction, so splenectomy is ineffective and adds infection risk.</li>
+            <li>Other immunosuppressants (azathioprine, cyclophosphamide alone, IVIG) have little supporting evidence.</li>
+          </ul>
+        </div>
+
+        <div class="sub searchable" data-keywords="thrombosis vte anticoagulation risk monitoring follow up">
+          <h3>6. Other considerations</h3>
+          <ul>
+            <li>CAD carries an increased risk of venous and arterial thrombosis; stay alert and use thromboprophylaxis when admitted or post-op per standard risk assessment.</li>
+            <li>Monitor Hb, LDH, bilirubin, reticulocytes; repeat clonal assessment if the course changes.</li>
+            <li>Erythropoiesis-stimulating agents may help selected patients with inadequate reticulocytosis.</li>
+          </ul>
+        </div>
+      </div>
+    </details>
+  </section>
+
+  <!-- ============ 4c. TRANSFUSION & SURGERY ============ -->
+  <section id="transfusion" class="searchable" data-keywords="transfusion surgery protocol blood warmer washed rbc cardioplegia hypothermia bypass">
+    <details>
+      <summary><span class="badge">Protocols</span><h2>Transfusion &amp; Surgery Protocols</h2><span class="chev" aria-hidden="true">▾</span></summary>
+      <div class="sec-body">
+
+        <div class="sub searchable" data-keywords="transfusion blood warmer crossmatch compatibility prewarm adsorption alloantibody">
+          <h3>Transfusion</h3>
+          <ul>
+            <li><strong>Blood warmer:</strong> use an approved in-line blood warmer for all RBC units and IV fluids. Infuse slowly while monitoring for hemolysis.</li>
+            <li><strong>Warm the patient</strong> (room, blankets, especially extremities) during and after transfusion.</li>
+            <li><strong>Compatibility testing:</strong> cold autoantibody can interfere with ABO typing and crossmatch. The lab may use pre-warmed (37 °C) technique, washing with warm saline, or autoadsorption to exclude underlying alloantibodies. Inform the lab of the diagnosis.</li>
+            <li><strong>Washed RBCs:</strong> optional and rarely needed. The historic rationale (removing donor complement) is unproven; warmed standard units are generally sufficient.</li>
+            <li><strong>Do not delay</strong> life-saving transfusion for full serologic workup; give warmed, least-incompatible units in consultation with the transfusion service.</li>
+            <li>Expect a shorter survival of transfused RBCs during active hemolysis; set realistic Hb targets.</li>
+          </ul>
+        </div>
+
+        <div class="sub searchable" data-keywords="surgery perioperative anesthesia normothermia hypothermia operating room">
+          <h3>Surgery &amp; anesthesia</h3>
+          <ul>
+            <li>Notify anesthesia, surgery, perfusion and transfusion service pre-op; check titer and thermal amplitude.</li>
+            <li>Maintain strict <strong>normothermia</strong>: warmed OR, forced-air warming, warmed IV fluids, blood, irrigation and inspired gases.</li>
+            <li><strong>Avoid induced hypothermia</strong> where possible.</li>
+            <li>For high-titer / high-thermal-amplitude antibodies before major elective surgery, consider pre-op <strong>plasma exchange</strong> or <strong>complement inhibition</strong> (sutimlimab) to reduce hemolysis risk.</li>
+          </ul>
+        </div>
+
+        <div class="sub searchable" data-keywords="cardiac surgery cardiopulmonary bypass cardioplegia cold hypothermia normothermic warm">
+          <h3>Cardiac surgery / cardiopulmonary bypass</h3>
+          <ul>
+            <li><strong>Avoid cold cardioplegia and systemic hypothermia.</strong> Use normothermic (warm) bypass and warm-blood cardioplegia when feasible.</li>
+            <li>If hypothermia is unavoidable, perfusion may screen the circuit/cardioplegia for agglutination and plan plasma exchange pre-op.</li>
+            <li>Watch for agglutination in cardioplegia lines, coronary microcirculation, and post-op hemolysis.</li>
+          </ul>
+        </div>
+      </div>
+    </details>
+  </section>
+
+  <!-- ============ LAB PITFALLS ============ -->
+  <section id="labs" class="searchable" data-keywords="lab pitfalls cbc artifact mcv mchc spurious thermal amplitude titer">
+    <details>
+      <summary><span class="badge">Lab</span><h2>Lab Interpretation &amp; Pitfalls</h2><span class="chev" aria-hidden="true">▾</span></summary>
+      <div class="sec-body">
+        <table class="tbl">
+          <thead><tr><th>Test</th><th>Typical finding / pitfall</th></tr></thead>
+          <tbody>
+            <tr class="searchable"><td data-label="Test">Automated CBC</td><td data-label="Finding / pitfall">Agglutinates counted as single large cells: <strong>falsely low RBC count and hematocrit, falsely high MCV and very high MCHC</strong> (often &gt;36 g/dL). Re-run after warming the sample to 37 °C.</td></tr>
+            <tr class="searchable"><td data-label="Test">Direct antiglobulin test</td><td data-label="Finding / pitfall">Strongly positive for <strong>C3d</strong>; <strong>IgG negative</strong> (or weakly positive in a minority).</td></tr>
+            <tr class="searchable"><td data-label="Test">Cold agglutinin titer</td><td data-label="Finding / pitfall"><strong>≥64 at 4 °C</strong> supports CAD; titers in CAD are often ≥512. Low titers can be seen in healthy people. False low if sample cooled before separation.</td></tr>
+            <tr class="searchable"><td data-label="Test">Thermal amplitude</td><td data-label="Finding / pitfall">Highest temperature at which the antibody agglutinates RBCs. Antibodies reacting at ≥28–30 °C are clinically significant; thermal amplitude correlates with severity better than titer.</td></tr>
+            <tr class="searchable"><td data-label="Test">Peripheral smear</td><td data-label="Finding / pitfall">RBC agglutination (clumps) on a room-temperature smear, which disperses when the slide/sample is warmed. Spherocytes are less prominent than in warm AIHA.</td></tr>
+            <tr class="searchable"><td data-label="Test">SPEP / IFE</td><td data-label="Finding / pitfall">Monoclonal IgM-κ in most primary CAD; serum must be separated at 37 °C or the M-protein may be underestimated.</td></tr>
+            <tr class="searchable"><td data-label="Test">Complement (C3, C4)</td><td data-label="Finding / pitfall">C4 often low (consumption); C3 may be low-normal. Acute-phase rises in C3 during febrile illness can worsen hemolysis.</td></tr>
+            <tr class="searchable"><td data-label="Test">Chemistry</td><td data-label="Finding / pitfall">Visible agglutination can interfere with some analyzers; serum may show hemolysis if drawn/handled cold.</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </details>
+  </section>
+
+  <div class="card no-results" id="noResults">
+    <p><strong>No matches.</strong></p>
+    <p class="muted small">Try a shorter keyword, e.g. "titer", "C3d", "warmer", "rituximab".</p>
+  </div>
+
+  <div class="card small searchable" id="refs" data-keywords="references sources evidence guidelines">
+    <h2 style="font-size:1rem">Key references</h2>
+    <ul>
+      <li>Berentsen S, et al. Diagnosis and management of CAD: recommendations from the First International Consensus Meeting. <em>Blood Rev.</em> 2020 / <em>Hemasphere</em> (and updates).</li>
+      <li>Jäger U, et al. Diagnosis and treatment of autoimmune hemolytic anemia in adults: First International Consensus Meeting. <em>Blood Rev.</em> 2020;41:100648.</li>
+      <li>Röth A, et al. Sutimlimab in CAD (CARDINAL). <em>N Engl J Med.</em> 2021;384:1323-34. CADENZA: <em>Blood</em> 2022;140:980-91.</li>
+      <li>Berentsen S, et al. Bendamustine plus rituximab for chronic CAD. <em>Blood.</em> 2017;130:537-41.</li>
+      <li>Sutimlimab (Enjaymo) prescribing information — check current local label.</li>
+    </ul>
+  </div>
+</main>
+
+<!-- ============ 5. DISCLAIMER FOOTER ============ -->
+<footer>
+  <div class="wrap">
+    <div class="disclaimer" role="note">
+      <strong>⚕️ Medical disclaimer</strong>
+      This guide is for educational and quick-reference use by healthcare professionals only. It does not replace clinical judgment, specialist consultation, or the current product label. Always verify doses, indications and procedures against your institutional protocols, transfusion service policies and up-to-date guidelines.
+    </div>
+    <p>
+      <span class="net" id="netStatus"><i></i><span>Online</span></span>
+      · <span id="swStatus">Offline cache: checking…</span>
+    </p>
+    <p>Content reviewed November 2026 · v1.0</p>
+  </div>
+</footer>
+
+<script>
+(function () {
+  'use strict';
+
+  /* ---------- Checklist data ---------- */
+  var CHECKLISTS = {
+    'cl-pre': [
+      ['pre-warm', 'Specimens drawn into pre-warmed tubes and kept at 37–40 °C until separated', 'Water bath / heat block; label "cold agglutinin – keep warm".'],
+      ['pre-typing', 'ABO/Rh type & antibody screen using pre-warmed technique', 'Ask the blood bank about warm washing / adsorption to exclude alloantibodies.'],
+      ['pre-warmer', 'In-line blood warmer ordered and available at bedside', 'Also warm all IV fluids; no cold infusions.'],
+      ['pre-env', 'Patient kept warm (room, blankets, extremities covered)', ''],
+      ['pre-bb', 'Transfusion service informed of CAD / cold agglutinin', 'Urgent transfusion is not withheld for serology.']
+    ],
+    'cl-dx': [
+      ['dx-dat', 'DAT: positive for C3d, negative for IgG', 'Polyspecific DAT positive; monospecific strongly C3d+; IgG negative or only weakly positive.'],
+      ['dx-titer', 'Cold agglutinin titer ≥64 at 4 °C', 'Sample kept at 37 °C until serum separated; CAD titers often ≥512.'],
+      ['dx-ta', 'Thermal amplitude measured', 'Reactivity at ≥28–30 °C indicates clinical significance.'],
+      ['dx-smear', 'Peripheral smear: RBC agglutination', 'Clumps that disperse on warming; consider CBC re-run at 37 °C (MCV/MCHC artifact).']
+    ],
+    'cl-hemo': [
+      ['he-ldh', 'LDH (elevated)', ''],
+      ['he-hapto', 'Haptoglobin (low / undetectable)', ''],
+      ['he-bili', 'Indirect (unconjugated) bilirubin (elevated)', ''],
+      ['he-retic', 'Reticulocyte count', 'Inappropriately low response may reflect marrow infiltration or deficiency.'],
+      ['he-ua', 'Urinalysis for hemoglobinuria (optional)', 'Suggests intravascular component.']
+    ],
+    'cl-clone': [
+      ['cl-spep', 'SPEP / immunofixation (IFE) ± serum free light chains', 'Monoclonal IgM-κ typical; separate serum at 37 °C.'],
+      ['cl-flow', 'Peripheral blood flow cytometry for clonal B cells', ''],
+      ['cl-bm', 'Bone marrow biopsy (morphology, flow, IHC) to rule out / characterize lymphoproliferative disorder', 'CAD-associated LPD vs LPL, marginal zone or other lymphoma.'],
+      ['cl-img', 'CT (± PET) if aggressive lymphoma suspected', 'B symptoms, lymphadenopathy, splenomegaly.'],
+      ['cl-inf', 'Infection screen when secondary CAS suspected', 'Mycoplasma serology/PCR, EBV, CMV, SARS-CoV-2.']
+    ],
+    'cl-vax': [
+      ['vx-menacwy', 'Meningococcal conjugate (MenACWY)', 'Primary series and boosters per ACIP for complement inhibitor use.'],
+      ['vx-menb', 'Meningococcal serogroup B (MenB)', 'Primary series and boosters per ACIP.'],
+      ['vx-pneumo', 'Pneumococcal (PCV20 or PCV21; or PCV15 followed by PPSV23)', 'Per current ACIP/national schedule.'],
+      ['vx-hib', 'Haemophilus influenzae type b (Hib)', 'If not previously vaccinated, per national guidance.'],
+      ['vx-timing', 'Completed ≥2 weeks before first sutimlimab dose (or risk documented if urgent)', 'Recheck boosters while on therapy.'],
+      ['vx-edu', 'Patient educated on infection warning signs; seek care for fever', 'Provide a patient safety card where available.']
+    ]
+  };
+
+  var STORE = 'cad-checklist-v1';
+  var state = {};
+  try { state = JSON.parse(localStorage.getItem(STORE) || '{}') || {}; } catch (e) { state = {}; }
+  function save() { try { localStorage.setItem(STORE, JSON.stringify(state)); } catch (e) {} }
+
+  function esc(s) {
+    return String(s).replace(/[&<>"]/g, function (c) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]; });
+  }
+
+  Object.keys(CHECKLISTS).forEach(function (cid) {
+    var host = document.getElementById(cid);
+    host.innerHTML = CHECKLISTS[cid].map(function (it) {
+      var id = it[0], on = !!state[id];
+      return '<label class="check searchable' + (on ? ' done' : '') + '" data-id="' + id + '">' +
+        '<input type="checkbox" id="chk-' + id + '"' + (on ? ' checked' : '') + '>' +
+        '<span class="box" aria-hidden="true">✓</span>' +
+        '<span class="txt"><b>' + esc(it[1]) + '</b>' + (it[2] ? '<span>' + esc(it[2]) + '</span>' : '') + '</span>' +
+        '</label>';
+    }).join('');
+  });
+
+  var mainIds = ['cl-pre', 'cl-dx', 'cl-hemo', 'cl-clone'];
+  function updateProgress() {
+    var total = 0, done = 0;
+    mainIds.forEach(function (cid) {
+      CHECKLISTS[cid].forEach(function (it) { total++; if (state[it[0]]) done++; });
+    });
+    document.getElementById('progCount').textContent = done + ' / ' + total;
+    document.getElementById('progBar').style.width = (total ? (done / total * 100) : 0) + '%';
+  }
+
+  document.addEventListener('change', function (e) {
+    var t = e.target;
+    if (!t.matches || !t.matches('.check input')) return;
+    var lbl = t.closest('.check');
+    var id = lbl.getAttribute('data-id');
+    if (t.checked) state[id] = 1; else delete state[id];
+    lbl.classList.toggle('done', t.checked);
+    if (navigator.vibrate) { try { navigator.vibrate(8); } catch (err) {} }
+    save(); updateProgress();
+  });
+
+  function resetGroup(ids) {
+    ids.forEach(function (cid) {
+      CHECKLISTS[cid].forEach(function (it) {
+        delete state[it[0]];
+        var inp = document.getElementById('chk-' + it[0]);
+        if (inp) { inp.checked = false; inp.closest('.check').classList.remove('done'); }
+      });
+    });
+    save(); updateProgress();
+  }
+  document.getElementById('resetChecklist').addEventListener('click', function () { resetGroup(mainIds); });
+  document.getElementById('resetVax').addEventListener('click', function () { resetGroup(['cl-vax']); });
+  updateProgress();
+
+  /* ---------- Theme toggle ---------- */
+  var root = document.documentElement, tbtn = document.getElementById('themeToggle');
+  function paintThemeBtn() {
+    var dark = root.getAttribute('data-theme') === 'dark';
+    tbtn.textContent = dark ? '☀️' : '🌙';
+    tbtn.setAttribute('aria-label', dark ? 'Switch to light theme' : 'Switch to dark theme');
+    tbtn.setAttribute('aria-pressed', String(dark));
+  }
+  tbtn.addEventListener('click', function () {
+    var next = root.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
+    root.setAttribute('data-theme', next);
+    try { localStorage.setItem('cad-theme', next); } catch (e) {}
+    paintThemeBtn();
+  });
+  paintThemeBtn();
+
+  /* ---------- Search / filter ---------- */
+  var input = document.getElementById('search');
+  var box = document.getElementById('searchBox');
+  var status = document.getElementById('searchStatus');
+  var noRes = document.getElementById('noResults');
+  var content = document.getElementById('content');
+  var detailsEls = Array.prototype.slice.call(content.querySelectorAll('details'));
+  var initialOpen = detailsEls.map(function (d) { return d.open; });
+
+  // Leaf-level searchable units: elements with .searchable that contain no nested .searchable
+  var allSearchables = Array.prototype.slice.call(content.querySelectorAll('.searchable'));
+  function norm(s) { return s.toLowerCase().replace(/[°]/g, ' ').replace(/\s+/g, ' ').trim(); }
+  // Precompute searchable text. For containers, "own" text excludes nested searchable units.
+  var fullText = new Map(), ownText = new Map();
+  allSearchables.forEach(function (el) {
+    var kw = el.getAttribute('data-keywords') || '';
+    fullText.set(el, norm(kw + ' ' + el.textContent));
+    var c = el.cloneNode(true);
+    Array.prototype.forEach.call(c.querySelectorAll('.searchable'), function (n) { n.remove(); });
+    ownText.set(el, norm(kw + ' ' + c.textContent));
+  });
+  function textOf(el) { return fullText.get(el); }
+
+  function clearMarks() {
+    var marks = content.querySelectorAll('mark[data-hl]');
+    for (var i = 0; i < marks.length; i++) {
+      var m = marks[i], p = m.parentNode;
+      p.replaceChild(document.createTextNode(m.textContent), m);
+      p.normalize();
+    }
+  }
+  function highlight(el, terms) {
+    if (!terms.length) return;
+    var re = new RegExp('(' + terms.map(function (t) { return t.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'); }).join('|') + ')', 'gi');
+    var walker = document.createTreeWalker(el, NodeFilter.SHOW_TEXT, {
+      acceptNode: function (n) {
+        if (!n.nodeValue.trim()) return NodeFilter.FILTER_REJECT;
+        var p = n.parentNode;
+        if (p.closest('.hidden-by-search, script, style, mark, summary .chev')) return NodeFilter.FILTER_REJECT;
+        return NodeFilter.FILTER_ACCEPT;
+      }
+    });
+    var nodes = [], n;
+    while ((n = walker.nextNode())) nodes.push(n);
+    nodes.forEach(function (node) {
+      var v = node.nodeValue;
+      re.lastIndex = 0;
+      if (!re.test(v)) return;
+      re.lastIndex = 0;
+      var frag = document.createDocumentFragment(), last = 0, m;
+      while ((m = re.exec(v))) {
+        if (m.index > last) frag.appendChild(document.createTextNode(v.slice(last, m.index)));
+        var mk = document.createElement('mark'); mk.setAttribute('data-hl', ''); mk.textContent = m[0];
+        frag.appendChild(mk); last = m.index + m[0].length;
+        if (m[0].length === 0) re.lastIndex++;
+      }
+      if (last < v.length) frag.appendChild(document.createTextNode(v.slice(last)));
+      node.parentNode.replaceChild(frag, node);
+    });
+  }
+
+  var timer;
+  function runSearch() {
+    var q = norm(input.value);
+    box.classList.toggle('has-text', q.length > 0);
+    clearMarks();
+    allSearchables.forEach(function (el) { el.classList.remove('hidden-by-search'); });
+
+    if (!q) {
+      detailsEls.forEach(function (d, i) { d.open = initialOpen[i]; });
+      status.textContent = '';
+      noRes.classList.remove('show');
+      return;
+    }
+    var terms = q.split(' ').filter(Boolean);
+    function hasAll(t) { return terms.every(function (term) { return t.indexOf(term) !== -1; }); }
+    // A unit "self-matches" when its own text (excluding nested units) contains every term.
+    var matchSet = new Set();
+    allSearchables.forEach(function (el) { if (hasAll(ownText.get(el))) matchSet.add(el); });
+    // Visible if: it self-matches, OR any descendant self-matches, OR an ancestor self-matched
+    // (then the whole block is shown as context).
+    allSearchables.forEach(function (el) {
+      if (matchSet.has(el)) return;
+      var desc = el.querySelectorAll('.searchable');
+      for (var i = 0; i < desc.length; i++) if (matchSet.has(desc[i])) return;
+      for (var anc = el.parentElement; anc && anc !== content; anc = anc.parentElement) {
+        if (matchSet.has(anc)) return;
+      }
+      el.classList.add('hidden-by-search');
+    });
+
+    // Hide checklist group titles whose list is fully hidden
+    content.querySelectorAll('.group-title').forEach(function (gt) {
+      var list = gt.nextElementSibling;
+      var vis = list && list.querySelector('.check:not(.hidden-by-search)');
+      gt.classList.toggle('hidden-by-search', !vis);
+    });
+    // Hide tables whose rows are all hidden
+    content.querySelectorAll('table.tbl').forEach(function (tb) {
+      var vis = tb.querySelector('tbody tr:not(.hidden-by-search)');
+      tb.classList.toggle('hidden-by-search', !vis);
+    });
+
+    // Open details that contain matches
+    detailsEls.forEach(function (d) {
+      var sec = d.closest('section');
+      d.open = !!(sec && !sec.classList.contains('hidden-by-search'));
+    });
+
+    var visibleTop = Array.prototype.filter.call(content.children, function (c) {
+      return c.classList.contains('searchable') && !c.classList.contains('hidden-by-search');
+    });
+    var leafHits = Array.prototype.filter.call(content.querySelectorAll('.searchable'), function (el) {
+      return !el.classList.contains('hidden-by-search') && matchSet.has(el);
+    }).length;
+
+    noRes.classList.toggle('show', visibleTop.length === 0);
+    status.textContent = visibleTop.length === 0
+      ? 'No matches for "' + input.value.trim() + '"'
+      : leafHits + ' match' + (leafHits === 1 ? '' : 'es') + ' in ' + visibleTop.length + ' section' + (visibleTop.length === 1 ? '' : 's');
+
+    visibleTop.forEach(function (el) { highlight(el, terms); });
+  }
+
+  input.addEventListener('input', function () { clearTimeout(timer); timer = setTimeout(runSearch, 80); });
+  input.addEventListener('keydown', function (e) { if (e.key === 'Escape') { input.value = ''; runSearch(); } });
+  document.getElementById('clearSearch').addEventListener('click', function () { input.value = ''; runSearch(); input.focus(); });
+
+  // Jump chips: clear search and open the target section
+  document.querySelectorAll('.chips a').forEach(function (a) {
+    a.addEventListener('click', function () {
+      if (input.value) { input.value = ''; runSearch(); }
+      var tgt = document.querySelector(a.getAttribute('href'));
+      var d = tgt && tgt.querySelector('details');
+      if (d) d.open = true;
+    });
+  });
+
+  /* ---------- Online status ---------- */
+  var net = document.getElementById('netStatus');
+  function paintNet() {
+    var on = navigator.onLine;
+    net.classList.toggle('off', !on);
+    net.lastElementChild.textContent = on ? 'Online' : 'Offline';
+  }
+  window.addEventListener('online', paintNet);
+  window.addEventListener('offline', paintNet);
+  paintNet();
+
+  /* ---------- Service worker ---------- */
+  var swStatus = document.getElementById('swStatus');
+  if ('serviceWorker' in navigator && (location.protocol === 'https:' || location.hostname === 'localhost' || location.hostname === '127.0.0.1')) {
+    window.addEventListener('load', function () {
+      navigator.serviceWorker.register('sw.js').then(function (reg) {
+        swStatus.textContent = 'Offline cache: ready';
+        reg.addEventListener('updatefound', function () {
+          var nw = reg.installing;
+          if (!nw) return;
+          nw.addEventListener('statechange', function () {
+            if (nw.state === 'installed' && navigator.serviceWorker.controller) {
+              swStatus.textContent = 'Update available: reload to apply';
+            }
+          });
+        });
+      }).catch(function () { swStatus.textContent = 'Offline cache: unavailable'; });
+    });
+  } else {
+    swStatus.textContent = 'Offline cache: needs HTTPS';
+  }
+})();
+</script>
+</body>
+</html>
